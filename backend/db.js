@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { Client } from "pg";
+import dotenv from 'dotenv';
+import { Client } from 'pg';
 
 dotenv.config({ quiet: true });
 
@@ -10,7 +10,7 @@ const pgClient = new Client({
 
 pgClient
   .connect()
-  .then(() => console.log("✅ Connected to PostgreSQL"))
-  .catch((err) => console.error("❌ Database connection failed:", err));
+  .then(() => console.log('✅ Connected to PostgreSQL'))
+  .catch((err) => console.error('❌ Database connection failed:', err));
 
 export default pgClient;

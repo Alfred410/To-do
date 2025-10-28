@@ -1,0 +1,21 @@
+{
+  // Gör Prettier till standardformaterare
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Formatera automatiskt när filen sparas
+  "editor.formatOnSave": true,
+
+  // Låt ESLintfixa kodregler vid save
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Inaktivera inbyggd ESLint-formatering för att undvika konflikter med Prettier
+  "eslint.format.enable": false,
+
+  //Använder lokal Prettier-version
+  "prettier.prettierPath": "./node_modules/prettier",
+
+  // Aktivera debug-loggar för Prettier
+  "prettier.enableDebugLogs": true
+}
