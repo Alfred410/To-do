@@ -8,25 +8,25 @@ export default function Regsiter() {
         <input
           type="text"
           placeholder="Firstname"
-          className="my-2 border rounded py-1 pl-2"
+          className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <input
           type="text"
           placeholder="Lastname"
-          className="my-2 border rounded py-1 pl-2"
+          className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <input
           type="email"
           placeholder="Email"
-          className="my-2 border rounded py-1 pl-2"
+          className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <input
           type="password"
           placeholder="Password"
-          className="my-2 border rounded py-1 pl-2"
+          className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <div className="flex justify-center w-[250px] my-3">
@@ -46,7 +46,7 @@ export default function Regsiter() {
           Register
         </button>
       </form>
-      <a href="/login" className="text-center mt-3">
+      <a href="/login" className="text-center text-blue-400 text-sm mt-3">
         Login here
       </a>
     </div>
