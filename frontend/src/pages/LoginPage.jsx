@@ -1,9 +1,32 @@
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
 export default function Login() {
+  const location = useLocation();
+  const [feedback, setFeedback] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.feedback) {
+      setFeedback(location.state.feedback);
+    }
+  }, [location.state]);
+
   return (
     <div className="flex flex-col justify-center mt-5 px-4">
       <h1 className="text-[37px] text-gray-800  text-center mb-9 mt-3">
         Login
       </h1>
+      {feedback && (
+        <div
+          className={`p-2 rounded mb-4 text-center ${
+            feedback.type === 'error'
+              ? 'bg-red-100 text-red-700'
+              : 'bg-green-100 text-green-800'
+          }`}
+        >
+          {feedback.message}
+        </div>
+      )}
       <form className="flex items-center  mt-20 text-black flex-col ">
         <input
           type="email"

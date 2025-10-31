@@ -1,20 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
-  Typography,
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState('Kalle');
   const [lastName, setLastName] = useState('Anka');
   const [email] = useState('kalle.anka@gmail.com'); // kan inte ändras
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -25,7 +29,17 @@ const ProfilePage = () => {
   const [feedback, setFeedback] = useState('');
   const [feedbackType, setFeedbackType] = useState('success');
 
-  const handleTogglePassword = () => setShowPassword(!showPassword);
+  useEffect(() => {
+    if (!feedback) return;
+    const timer = setTimeout(() => setFeedback(''), 4000);
+    return () => clearTimeout(timer);
+  }, [feedback]);
+
+  const handleToggleCurrentPassword = () =>
+    setShowCurrentPassword((prev) => !prev);
+  const handleToggleNewPassword = () => setShowNewPassword((prev) => !prev);
+  const handleToggleConfirmedPassword = () =>
+    setShowConfirmedPassword((prev) => !prev);
 
   const openDialog = (type) => {
     setDialogType(type);
@@ -73,41 +87,63 @@ const ProfilePage = () => {
 
       case 'delete':
         setFeedbackType('success');
-        setFeedback('Ditt konto har tagits bort.');
+        navigate('/login', {
+          state: {
+            feedback: {
+              message: 'Ditt konto har tagits bort.',
+              type: 'success',
+            },
+          },
+        });
         break;
 
       default:
         break;
     }
     setDialogOpen(false);
-    setTimeout(() => {
-      if (!dialogOpen) setFeedback('');
-    }, 4000);
   };
+
+  const inputClass =
+    'w-full p-2 border rounded-lg mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none';
+  const labelClass = 'block text-gray-800 font-semibold mb-2';
+  const buttonClass =
+    'w-full p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition mb-2 mt-2';
+  const passwordDivClass =
+    'flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-indigo-400 mb-2';
+  const passwordInputClass = 'flex-1 p-2 text-gray-800 outline-none';
+  const dividerClass = 'border-t border-gray-300 my-6';
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center">
-      <div className="w-full max-w-lg min-h-[96vh] p-6 mt-0 sm:mt-4 bg-white shadow-lg rounded-lg">
+      <div className="w-full max-w-lg min-h-[96vh] p-6 sm:mt-4 bg-white shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Konto
         </h1>
 
         <div className="mb-4">
-          <label className="block text-gray-800 font-semibold mb-1">
-            Förnamn
-          </label>
+          <label className={labelClass}>E-post</label>
+          <input
+            type="email"
+            value={email}
+            disabled
+            className="w-full p-2 border rounded-lg text-gray-600 bg-gray-100 cursor-not-allowed opacity-70"
+          />
+        </div>
+
+        <div className={dividerClass} />
+
+        <div className="mb-4">
+          <label className={labelClass}>Förnamn</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg mb-2"
+            className={inputClass}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
-          <label className="block text-gray-800 font-semibold mb-1">
-            Efternamn
-          </label>
+          <label className={labelClass}>Efternamn</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg mb-4"
+            className={inputClass}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -124,61 +160,71 @@ const ProfilePage = () => {
             </div>
           )}
 
-          <button
-            className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-500 transition"
-            onClick={() => openDialog('profile')}
-          >
+          <button className={buttonClass} onClick={() => openDialog('profile')}>
             Spara ändringar
           </button>
         </div>
 
-        <div className="mb-6">
-          <label className="block text-gray-800 font-semibold mb-1">
-            E-post
-          </label>
-          <p className="w-full p-2 border rounded-lg text-gray-800 cursor-pointer">
-            {email}
-          </p>
-        </div>
+        <div className={dividerClass} />
 
         <div className="mb-6">
-          <label className="block text-gray-800 font-semibold mb-1">
-            Nuvarande lösenord
-          </label>
-          <div className="flex items-center border rounded-lg overflow-hidden mb-3">
+          <label className={labelClass}>Nuvarande lösenord</label>
+          <div className={passwordDivClass}>
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showCurrentPassword ? 'text' : 'password'}
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="Nuvarande lösenord"
-              className="flex-1 p-2 text-gray-800 outline-none"
+              autoComplete="current-password"
+              className={passwordInputClass}
             />
-            <IconButton onClick={handleTogglePassword}>
-              {showPassword ? <Visibility /> : <VisibilityOff />}
+            <IconButton
+              onClick={handleToggleCurrentPassword}
+              aria-label={
+                showCurrentPassword ? 'Dölj lösenord' : 'Visa lösenord'
+              }
+            >
+              {showCurrentPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </div>
 
-          <label className="block text-gray-800 font-semibold mb-1">
-            Nytt lösenord
-          </label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Nytt lösenord"
-            className="w-full p-2 border rounded-lg mb-3"
-          />
+          <label className={labelClass}>Nytt lösenord</label>
+          <div className={passwordDivClass}>
+            <input
+              type={showNewPassword ? 'text' : 'password'}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Nytt lösenord"
+              autoComplete="new-password"
+              className={passwordInputClass}
+            />
+            <IconButton
+              onClick={handleToggleNewPassword}
+              aria-label={showNewPassword ? 'Dölj lösenord' : 'Visa lösenord'}
+            >
+              {showNewPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </div>
 
-          <label className="block text-gray-800 font-semibold mb-1">
-            Bekräfta nytt lösenord
-          </label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Bekräfta nytt lösenord"
-            className="w-full p-2 border rounded-lg mb-4"
-          />
+          <label className={labelClass}>Bekräfta nytt lösenord</label>
+          <div className={passwordDivClass}>
+            <input
+              type={showConfirmedPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Bekräfta nytt lösenord"
+              autoComplete="new-password"
+              className={passwordInputClass}
+            />
+            <IconButton
+              onClick={handleToggleConfirmedPassword}
+              aria-label={
+                showConfirmedPassword ? 'Dölj lösenord' : 'Visa lösenord'
+              }
+            >
+              {showConfirmedPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </div>
 
           {dialogType === 'password' && feedback && (
             <p
@@ -193,20 +239,25 @@ const ProfilePage = () => {
           )}
 
           <button
-            className="w-full bg-indigo-600 text-white p-2 px-3 rounded-lg hover:bg-indigo-500 transition"
+            className={buttonClass}
             onClick={() => openDialog('password')}
           >
             Ändra lösenord
           </button>
         </div>
 
-        <div className="mb-6 text-center">
+        <div className={dividerClass} />
+
+        <div className="mb-10 text-center">
           <a href="#" className="text-blue-600 underline hover:text-blue-500">
             Läs vår integritetspolicy och GDPR-information
           </a>
         </div>
 
-        <button className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-500 transition mb-4">
+        <button
+          className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-500 transition mb-4"
+          onClick={() => navigate('/login')}
+        >
           Logga ut
         </button>
 
@@ -216,19 +267,8 @@ const ProfilePage = () => {
         >
           Ta bort konto
         </button>
-
-        {dialogType === 'delete' && feedback && (
-          <p
-            className={`mt-4 p-2 rounded text-center ${
-              feedbackType === 'error'
-                ? 'bg-red-100 text-red-700'
-                : 'bg-green-100 text-green-800'
-            }`}
-          >
-            {feedback}
-          </p>
-        )}
       </div>
+
       <Dialog open={dialogOpen} onClose={closeDialog}>
         <DialogTitle>Bekräfta ändring</DialogTitle>
         <DialogContent>
