@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import todosRoutes from './routes/todoRoute.js';
+import userRoute from './routes/userRoute.js';
 
 dotenv.config({ quiet: true });
 
@@ -9,7 +10,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
 
-app.use('/api', todosRoutes);
+app.use('/todo', todosRoutes);
+app.use('/user', userRoute);
 
 console.log('Katalogen vi är i:', path.resolve());
 console.log('join:', path.join(path.resolve(), 'dist'));
