@@ -12,13 +12,13 @@ export default function Login() {
   }, [location.state]);
 
   return (
-    <div className="flex flex-col justify-center mt-5 px-4">
+    <div className="flex flex-col justify-center items-center mt-5 px-4">
       <h1 className="text-[37px] text-gray-800  text-center mb-9 mt-3">
         Login
       </h1>
       {feedback && (
         <div
-          className={`p-2 rounded mb-4 text-center ${
+          className={`p-2 rounded w-[210px] text-center  ${
             feedback.type === 'error'
               ? 'bg-red-100 text-red-700'
               : 'bg-green-100 text-green-800'
@@ -27,7 +27,7 @@ export default function Login() {
           {feedback.message}
         </div>
       )}
-      <form className="flex items-center  mt-20 text-black flex-col ">
+      <form className="flex items-center  mt-10 text-black flex-col ">
         <input
           type="email"
           placeholder="Email"
