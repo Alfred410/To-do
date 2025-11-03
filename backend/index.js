@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import taskRouter from './routes/tasksRoutes.js';
-import userRouter from './routes/userRoute.js';
+import userRouter from './routes/usersRoutes.js';
 
 dotenv.config({ quiet: true });
 
