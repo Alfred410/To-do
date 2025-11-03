@@ -1,8 +1,8 @@
 import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import taskRoute from './routes/taskRoute.js';
-import userRoute from './routes/userRoute.js';
+import taskRouter from './routes/tasksRoutes.js';
+import userRouter from './routes/userRoute.js';
 
 dotenv.config({ quiet: true });
 
@@ -10,8 +10,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
 
-app.use('/task', taskRoute);
-app.use('/user', userRoute);
+app.use('/api/task', taskRouter);
+app.use('/api/user', userRouter);
 
 console.log('Katalogen vi är i:', path.resolve());
 console.log('join:', path.join(path.resolve(), 'dist'));
