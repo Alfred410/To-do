@@ -5,7 +5,6 @@ dotenv.config({ quiet: true });
 
 const pgClient = new Client({
   connectionString: process.env.PGURI,
-  ssl: { rejectUnauthorized: false },
 });
 
 pgClient
