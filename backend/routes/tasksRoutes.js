@@ -35,11 +35,20 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, task_category_id, important, completed } = req.body;
+    const { important, completed } = req.body;
+
+    if (important === undefined && completed === undefined) {
+      return res.status(400).json({ error: 'Ingen data skickades för uppdatering' });
+    }
+
     const { rows } = await db.query(
-      `UPDATE tasks SET title = 1$, task_category_id=2$ important = $3, completed = $4, updated_at = NOW() WHERE id = $5 RETURNING *`,
-      [title, task_category_id, important, completed, id]
+      `UPDATE tasks SET important = COALESCE($1, important), completed = COALESCE($2, completed) WHERE id = $3 RETURNING *`,
+      [important !== undefined ? Boolean(important) : undefined, completed !== undefined ? Boolean(completed) : undefined, id]
     );
+     if (rows.length === 0) {
+      return res.status(404).json({ error: `Ingen uppgift hittades med id ${id}` });
+    }
+
     res.json(rows[0]);
   } catch (err) {
     console.error(err);

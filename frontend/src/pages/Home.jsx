@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {
+  getTasks,
+  addTask,
+  updateTask,
+  deleteTask,
+} from '../services/taskService';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -8,46 +14,72 @@ import StarIcon from '@mui/icons-material/Star';
 // Lokala kategorier som matchar databasschema
 const localCategories = [
   { id: 1, name: 'Arbete' },
-  { id: 2, name: 'Skola' },
-  { id: 3, name: 'Privat' },
-  { id: 4, name: 'Viktig' },
+  { id: 2, name: 'Privat' },
+  { id: 3, name: 'Skola' },
+  { id: 4, name: 'Shopping' },
+  { id: 5, name: 'Viktigt' },
 ];
+
+const userId = 1;
 
 export default function TodoApp() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
-  const addTask = () => {
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getTasks(userId);
+        setTasks(data);
+      } catch (err) {
+        console.error('Fel vid hämtning av uppgifter:', err);
+      }
+    };
+    fetchTasks();
+  }, []);
+
+  const addTaskHandler = async () => {
     if (!input.trim()) return;
 
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        title: input,
-        completed: false,
-        important: false,
-        task_category_id: selectedCategoryId || null,
-      },
-    ]);
+    const newTask = await addTask({
+      user_id: userId,
+      title: input,
+      task_category_id: selectedCategoryId,
+    });
+
+    setTasks([newTask, ...tasks]);
     setInput('');
     setSelectedCategoryId(null);
   };
 
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
-    );
+  const toggleTask = async (id) => {
+    try 
+    {const task = tasks.find((t) => t.id === id);
+    if (!task) return;
+    const updated = await updateTask(id, {
+      completed: !task.completed,
+    });
+    setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+  } catch(err){
+    console.error(err)
+  }
   };
 
-  const toggleImportant = (id) => {
-    setTasks(
-      tasks.map((t) => (t.id === id ? { ...t, important: !t.important } : t))
-    );
+  const toggleImportant = async (id) => {
+    try{
+    const task = tasks.find((t) => t.id === id);
+    const updated = await updateTask(id, {
+      important: !task.important,
+    });
+    setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+  } catch(err) {
+    console.error(err)
+  }
   };
 
-  const deleteTask = (id) => {
+  const deleteTaskHandler = async (id) => {
+    await deleteTask(id);
     setTasks(tasks.filter((t) => t.id !== id));
   };
 
@@ -86,7 +118,7 @@ export default function TodoApp() {
             className="w-full sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                addTask();
+                addTaskHandler();
               }
             }}
           />
@@ -109,7 +141,7 @@ export default function TodoApp() {
               ))}
             </select>
             <button
-              onClick={addTask}
+              onClick={addTaskHandler}
               className="bg-indigo-600 text-white p-2 px-3 rounded-lg hover:bg-indigo-500 transition"
             >
               <AddIcon />
@@ -173,7 +205,7 @@ export default function TodoApp() {
                   <StarIcon />
                 </button>
                 <button
-                  onClick={() => deleteTask(task.id)}
+                  onClick={() => deleteTaskHandler(task.id)}
                   className="text-red-500 hover:text-red-600 transition"
                 >
                   <DeleteIcon />
