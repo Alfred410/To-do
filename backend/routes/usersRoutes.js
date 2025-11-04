@@ -30,7 +30,7 @@ router.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   try {
-    const exists = await pgCLient.query('SELECT id FROM users WHERE email=$1', [
+    const exists = await pgClient.query('SELECT id FROM users WHERE email=$1', [
       email,
     ]);
 
@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Användaren finns redan' });
     }
 
-    const result = await pgCLient.query(
+    const result = await pgClient.query(
       'INSERT INTO users (firstName, lastName, email, password) VALUES ($1, $2, $3, $4) RETURNING id, firstName, lastName, email',
       [firstName, lastName, password]
     );
@@ -77,7 +77,7 @@ router.put('/password', async (req, res) => {
 
   try {
     //kolla gammalt lösen
-    const check = await pgCLient.query(
+    const check = await pgClient.query(
       'SELECT id FROM users WHERE id=$1 AND password=$2',
       [userId, oldPassword]
     );
