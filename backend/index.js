@@ -10,9 +10,11 @@ dotenv.config({ quiet: true });
 const app = express();
 const port = process.env.PORT || 3000;
 
+const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
 app.use(
   cors({
-    origin: port,
+    origin: frontendURL,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
   })
@@ -31,4 +33,5 @@ app.use(express.static(path.join(path.resolve(), 'dist')));
 
 app.listen(port, () => {
   console.log(`Backend:et är igång på ${port}`);
+  console.log(`Tillåten frontend-origin: ${frontendURL}`);
 });
