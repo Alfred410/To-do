@@ -114,9 +114,9 @@ router.get('/profile', async (req, res) => {
 
 //Change Password PUT
 router.put('/password', async (req, res) => {
-  const { userId, oldPassword, newPassword } = req.body;
+  const { userId, currentPassword, newPassword } = req.body;
 
-  if (!userId || !oldPassword || !newPassword)
+  if (!userId || !currentPassword || !newPassword)
     return res.status(400).json({ message: 'Alla fält krävs' });
 
   try {
@@ -133,7 +133,7 @@ router.put('/password', async (req, res) => {
     const user = userResult.rows[0];
 
     //Jämför lösen
-    const match = await bcrypt.compare(oldPassword, user.password);
+    const match = await bcrypt.compare(currentPassword, user.password);
     if (!match)
       return res.status(400).json({ message: 'Fel gammalt lösenord' });
 
