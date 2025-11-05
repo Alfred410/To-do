@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 import {
+  getProfile,
+  changeName,
+  changePassword,
+  deleteAccount,
+} from '../services/userService';
+import {
   IconButton,
   Dialog,
   DialogTitle,
@@ -12,9 +18,10 @@ import { useNavigate } from 'react-router-dom';
 const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState('Kalle');
-  const [lastName, setLastName] = useState('Anka');
-  const [email] = useState('kalle.anka@gmail.com'); // kan inte ändras
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState(null);
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -29,28 +36,50 @@ const ProfilePage = () => {
   const [feedback, setFeedback] = useState('');
   const [feedbackType, setFeedbackType] = useState('success');
 
+  //Hämta profilinfo från databasen
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const data = await getProfile();
+        setFirstName(data.first_name);
+        setLastName(data.last_name);
+        setEmail(data.email);
+        setUserId(data.id);
+      } catch (err) {
+        console.error('Kunde inte hämta profil:', err);
+        navigate('/login');
+      }
+    }
+    fetchProfile();
+  }, [navigate]);
+
+  //Automatisk återställning av feedback-meddelande efter 4 sekunder
   useEffect(() => {
     if (!feedback) return;
     const timer = setTimeout(() => setFeedback(''), 4000);
     return () => clearTimeout(timer);
   }, [feedback]);
 
+  // Hantera visning av lösenord
   const handleToggleCurrentPassword = () =>
     setShowCurrentPassword((prev) => !prev);
   const handleToggleNewPassword = () => setShowNewPassword((prev) => !prev);
   const handleToggleConfirmedPassword = () =>
     setShowConfirmedPassword((prev) => !prev);
 
+  // Hantera dialogöppning
   const openDialog = (type) => {
     setDialogType(type);
     setDialogOpen(true);
   };
 
+  //Hantera dialogstängning
   const closeDialog = () => {
     setDialogOpen(false);
   };
 
-  const handleConfirm = () => {
+  //Bekräftelsehantering för olika dialogtyper
+  const handleConfirm = async () => {
     switch (dialogType) {
       case 'profile':
         if (!firstName.trim() || !lastName.trim()) {
@@ -58,8 +87,14 @@ const ProfilePage = () => {
           setFeedback('Förnamn och efternamn kan inte vara tomma.');
           break;
         }
-        setFeedbackType('success');
-        setFeedback(`Namn uppdaterat: ${firstName} ${lastName}`);
+        try {
+          await changeName(userId, firstName, lastName);
+          setFeedbackType('success');
+          setFeedback(`Namn uppdaterat: ${firstName} ${lastName}`);
+        } catch {
+          setFeedbackType('error');
+          setFeedback('Kunde inte uppdatera namn.');
+        }
         break;
 
       case 'password':
@@ -78,23 +113,36 @@ const ProfilePage = () => {
           setFeedback('Det nya lösenordet måste vara minst 8 tecken.');
           break;
         }
-        setFeedbackType('success');
-        setFeedback('Lösenord uppdaterat!');
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmPassword('');
+        try {
+          await changePassword(userId, currentPassword, newPassword);
+          setFeedbackType('success');
+          setFeedback('Lösenord uppdaterat!');
+          setCurrentPassword('');
+          setNewPassword('');
+          setConfirmPassword('');
+        } catch {
+          setFeedbackType('error');
+          setFeedback('Kunde inte ändra lösenord.');
+        }
         break;
 
       case 'delete':
-        setFeedbackType('success');
-        navigate('/login', {
-          state: {
-            feedback: {
-              message: 'Ditt konto har tagits bort.',
-              type: 'success',
+        try {
+          await deleteAccount(userId);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          navigate('/login', {
+            state: {
+              feedback: {
+                message: 'Ditt konto har tagits bort.',
+                type: 'success',
+              },
             },
-          },
-        });
+          });
+        } catch {
+          setFeedbackType('error');
+          setFeedback('Kunde inte ta bort konto.');
+        }
         break;
 
       default:
@@ -256,7 +304,11 @@ const ProfilePage = () => {
 
         <button
           className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-500 transition mb-4"
-          onClick={() => navigate('/login')}
+          onClick={() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            navigate('/login');
+          }}
         >
           Logga ut
         </button>
