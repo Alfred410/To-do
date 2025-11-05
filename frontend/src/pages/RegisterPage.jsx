@@ -7,25 +7,25 @@ export default function Register() {
       <form className="flex items-center  text-black flex-col ">
         <input
           type="text"
-          placeholder="Firstname"
+          placeholder="Förnamn"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <input
           type="text"
-          placeholder="Lastname"
+          placeholder="Efternamn"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <input
           type="email"
-          placeholder="Email"
+          placeholder="E-post"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Lösenord"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
         />
