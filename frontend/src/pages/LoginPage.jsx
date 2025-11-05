@@ -1,15 +1,28 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { login } from '../services/userService';
 
 export default function Login() {
   const location = useLocation();
   const [feedback, setFeedback] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (location.state?.feedback) {
       setFeedback(location.state.feedback);
     }
   }, [location.state]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = await login(email, password);
+    } catch (err) {
+      setFeedback({ type: 'error', message: err.message });
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center mt-5 px-4">
@@ -27,18 +40,23 @@ export default function Login() {
           {feedback.message}
         </div>
       )}
-      <form className="flex items-center  mt-10 text-black flex-col ">
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center  mt-10 text-black flex-col"
+      >
         <input
           type="email"
           placeholder="Email"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button
           type="submit"
