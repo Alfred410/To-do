@@ -54,28 +54,28 @@ export default function TodoApp() {
   };
 
   const toggleTask = async (id) => {
-    try 
-    {const task = tasks.find((t) => t.id === id);
-    if (!task) return;
-    const updated = await updateTask(id, {
-      completed: !task.completed,
-    });
-    setTasks(tasks.map((t) => (t.id === id ? updated : t)));
-  } catch(err){
-    console.error(err)
-  }
+    try {
+      const task = tasks.find((t) => t.id === id);
+      if (!task) return;
+      const updated = await updateTask(id, {
+        completed: !task.completed,
+      });
+      setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const toggleImportant = async (id) => {
-    try{
-    const task = tasks.find((t) => t.id === id);
-    const updated = await updateTask(id, {
-      important: !task.important,
-    });
-    setTasks(tasks.map((t) => (t.id === id ? updated : t)));
-  } catch(err) {
-    console.error(err)
-  }
+    try {
+      const task = tasks.find((t) => t.id === id);
+      const updated = await updateTask(id, {
+        important: !task.important,
+      });
+      setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteTaskHandler = async (id) => {

@@ -29,15 +29,17 @@ export async function addTask(task) {
 export async function updateTask(id, updates) {
   try {
     const body = {};
-    if (updates.completed !== undefined) body.completed = Boolean(updates.completed);
-    if (updates.important !== undefined) body.important = Boolean(updates.important);
+    if (updates.completed !== undefined)
+      body.completed = Boolean(updates.completed);
+    if (updates.important !== undefined)
+      body.important = Boolean(updates.important);
 
     const res = await fetch(`${API_URL}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
     });
-    
+
     if (!res.ok) throw new Error('Misslyckades att uppdatera uppgift');
     return res.json();
   } catch (err) {
