@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function Register() {
   return (
     <div className="flex flex-col justify-center mt-5 px-4">
@@ -46,9 +48,9 @@ export default function Register() {
           Registrera
         </button>
       </form>
-      <a href="/login" className="text-center text-blue-400 text-sm mt-3">
+      <Link to="/login" className="text-center text-blue-400 text-sm mt-3">
         Logga in här
-      </a>
+      </Link>
     </div>
   );
 }
