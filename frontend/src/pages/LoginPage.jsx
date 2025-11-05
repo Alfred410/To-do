@@ -21,7 +21,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const data = await login(email, password);
+      await login(email, password);
       navigate('/');
     } catch (err) {
       setFeedback({ type: 'error', message: err.message });
