@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { login } from '../services/userService';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const location = useLocation();
@@ -27,7 +27,7 @@ export default function Login() {
   return (
     <div className="flex flex-col justify-center items-center mt-5 px-4">
       <h1 className="text-[37px] text-gray-800  text-center mb-9 mt-3">
-        Login
+        Logga in
       </h1>
       {feedback && (
         <div
@@ -46,14 +46,14 @@ export default function Login() {
       >
         <input
           type="email"
-          placeholder="Email"
+          placeholder="E-post"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Lösenord"
           className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required
           onChange={(e) => setPassword(e.target.value)}
@@ -62,16 +62,13 @@ export default function Login() {
           type="submit"
           className="bg-indigo-600 cursor-pointer hover:bg-indigo-500 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]"
         >
-          Login
+          Logga in
         </button>
       </form>
       <div className="text-blue-400 flex flex-col items-center text-sm mt-3">
-        <a className="mb-2 hover:underline" href="/">
-          Forgot Password
-        </a>
-        <a className="hover:underline" href="/register">
-          Register
-        </a>
+        <Link className="hover:underline" to="/register">
+          Registrera dig här
+        </Link>
       </div>
     </div>
   );
