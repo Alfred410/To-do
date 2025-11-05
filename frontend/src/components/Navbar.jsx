@@ -1,15 +1,26 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsLogin(false);
+    setIsOpen(false);
+    navigate('/login');
+  };
 
   return (
     <header className=" bg-gray-500  sticky top-0 z-10 shadow-md text-white ">
@@ -42,12 +53,7 @@ export default function Navbar() {
             </Link>
 
             {isLogin ? (
-              <button
-                onClick={() => {
-                  setIsLogin(false);
-                  setIsOpen(!isOpen);
-                }}
-              >
+              <button onClick={handleLogout}>
                 <LogoutIcon /> Logout
               </button>
             ) : (
@@ -72,14 +78,9 @@ export default function Navbar() {
           </Link>
 
           {isLogin ? (
-            <Link
-              to="/"
-              onClick={() => {
-                setIsLogin(false);
-              }}
-            >
+            <button onClick={handleLogout}>
               <LogoutIcon /> Logout
-            </Link>
+            </button>
           ) : (
             <Link to="/login" className="mr-2">
               <LoginIcon /> Login
