@@ -1,8 +1,12 @@
 import express from 'express';
 import pgClient from '../db.js';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+dotenv.config();
 
 //Login POST
 router.post('/login', async (req, res) => {
@@ -31,11 +35,23 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Fel email eller lösenord' });
     }
 
+    const token = jwt.sign(
+      {
+        id: user.id,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+    );
+
     res.json({
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: user.email,
+      message: 'Inloggning lyckades',
+      token,
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+      },
     });
   } catch (err) {
     console.error(err);
@@ -74,15 +90,17 @@ router.post('/register', async (req, res) => {
 });
 
 // Account information GET
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+router.get('/profile', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  if (!id) return res.status(400).json({ message: 'userId saknas' });
+  if (!token) return res.status(400).json({ message: 'Token saknas' });
 
   try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
     const result = await pgClient.query(
       'SELECT id, first_name, last_name, email, created_at FROM users WHERE id=$1',
-      [id]
+      [user.id]
     );
 
     if (result.rows.length === 0)

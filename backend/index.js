@@ -10,11 +10,13 @@ dotenv.config({ quiet: true });
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-origin: port,
-methods: ['GET', 'POST', 'PUT', 'DELETE'],
-allowedHeaders: ['Content-Type'],
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+  })
+);
 
 app.use(express.json());
 
