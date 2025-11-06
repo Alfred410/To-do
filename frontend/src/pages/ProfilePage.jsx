@@ -309,7 +309,7 @@ const ProfilePage = () => {
           onClick={() => {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            navigate('/login');
+            navigate('/login', {replace: true});
           }}
         >
           Logga ut
