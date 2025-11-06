@@ -14,14 +14,15 @@ import {
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [userId, setUserId] = useState(null);
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -39,19 +40,23 @@ const ProfilePage = () => {
   //Hämta profilinfo från databasen
   useEffect(() => {
     async function fetchProfile() {
+      if (!user) {
+        logout();
+        return;
+      }
+
       try {
         const data = await getProfile();
         setFirstName(data.first_name);
         setLastName(data.last_name);
         setEmail(data.email);
-        setUserId(data.id);
       } catch (err) {
-        console.error('Kunde inte hämta profil:', err);
-        navigate('/login');
+        console.error('Ogiltig session eller kunde inte hämta profil:', err);
+        logout();
       }
     }
     fetchProfile();
-  }, [navigate]);
+  }, [user,navigate, logout]);
 
   //Automatisk återställning av feedback-meddelande efter 4 sekunder
   useEffect(() => {
@@ -84,12 +89,12 @@ const ProfilePage = () => {
       case 'profile':
         try {
           if (!firstName.trim() && !lastName.trim()) {
-            await changeName(userId, firstName, lastName);
+            await changeName(firstName, lastName);
             setFeedbackType('success');
             setFeedback('Namn borttaget');
             break;
           } else {
-            await changeName(userId, firstName, lastName);
+            await changeName(firstName, lastName);
             setFeedbackType('success');
             setFeedback(`Namn uppdaterat till: ${firstName || ''} ${lastName || ''}`);
           }
@@ -116,7 +121,7 @@ const ProfilePage = () => {
           break;
         }
         try {
-          await changePassword(userId, currentPassword, newPassword);
+          await changePassword(currentPassword, newPassword);
           setFeedbackType('success');
           setFeedback('Lösenord uppdaterat!');
           setCurrentPassword('');
@@ -130,7 +135,7 @@ const ProfilePage = () => {
 
       case 'delete':
         try {
-          await deleteAccount(userId);
+          await deleteAccount();
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           navigate('/login', {
@@ -306,11 +311,7 @@ const ProfilePage = () => {
 
         <button
           className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-500 transition mb-4"
-          onClick={() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            navigate('/login', {replace: true});
-          }}
+          onClick={logout}
         >
           Logga ut
         </button>

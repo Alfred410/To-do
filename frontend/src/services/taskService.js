@@ -1,10 +1,9 @@
+import {apiFetch} from './apiClient.js';
 const API_URL = 'http://localhost:3000/api/task';
 
-export async function getTasks(userId) {
+export async function getTasks() {
   try {
-    const res = await fetch(`${API_URL}/${userId}`);
-    if (!res.ok) throw new Error('Misslyckades att hämta uppgifter');
-    return res.json();
+    return await apiFetch(`${API_URL}`);
   } catch (err) {
     console.error('Fel vid hämtning av uppgifter:', err);
     throw err;
@@ -13,13 +12,10 @@ export async function getTasks(userId) {
 
 export async function addTask(task) {
   try {
-    const res = await fetch(API_URL, {
+      return await apiFetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(task),
     });
-    if (!res.ok) throw new Error('Misslyckades att skapa uppgift');
-    return res.json();
   } catch (err) {
     console.error('Fel vid skapande av uppgift:', err);
     throw err;
@@ -34,14 +30,10 @@ export async function updateTask(id, updates) {
     if (updates.important !== undefined)
       body.important = Boolean(updates.important);
 
-    const res = await fetch(`${API_URL}/${id}`, {
+    return await apiFetch(`${API_URL}/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
+      body: JSON.stringify(body),
     });
-
-    if (!res.ok) throw new Error('Misslyckades att uppdatera uppgift');
-    return res.json();
   } catch (err) {
     console.error('Fel vid uppdatering av uppgift:', err);
     throw err;
@@ -50,8 +42,7 @@ export async function updateTask(id, updates) {
 
 export async function deleteTask(id) {
   try {
-    const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Misslyckades att ta bort uppgift');
+    await apiFetch(`${API_URL}/${id}`, { method: 'DELETE' });
     return true;
   } catch (err) {
     console.error('Fel vid borttagning av uppgift:', err);

@@ -1,20 +1,16 @@
+import {apiFetch} from './apiClient.js';
 const API_URL = `http://localhost:3000/api/user`;
 
 //LOGIN
 export async function login(email, password) {
   try {
-    const res = await fetch(`${API_URL}/login`, {
+    const data = await apiFetch(`${API_URL}/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error('Login misslyckades', data.message);
+    if (!data || !data.token) {
+      throw new Error(data?.message || 'Login misslyckades');
     }
 
     localStorage.setItem('token', data.token);
@@ -72,7 +68,7 @@ export async function getProfile() {
 }
 
 //CHANGE PASSWORD
-export async function changePassword(userId, currentPassword, newPassword) {
+export async function changePassword(currentPassword, newPassword) {
   try {
     const token = localStorage.getItem('token');
 
@@ -82,7 +78,7 @@ export async function changePassword(userId, currentPassword, newPassword) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ userId, currentPassword, newPassword }),
+      body: JSON.stringify({currentPassword, newPassword }),
     });
     const data = await res.json();
 
@@ -97,7 +93,7 @@ export async function changePassword(userId, currentPassword, newPassword) {
 }
 
 //CHANGE NAME
-export async function changeName(userId, firstName, lastName) {
+export async function changeName(firstName, lastName) {
   try {
     const token = localStorage.getItem('token');
 
@@ -107,7 +103,7 @@ export async function changeName(userId, firstName, lastName) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ userId, firstName, lastName }),
+      body: JSON.stringify({ firstName, lastName }),
     });
 
     const data = await res.json();
@@ -124,11 +120,11 @@ export async function changeName(userId, firstName, lastName) {
 }
 
 //DELETE ACCOUNT
-export async function deleteAccount(userId) {
+export async function deleteAccount() {
   try {
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${API_URL}/${userId}`, {
+    const res = await fetch(`${API_URL}/delete`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
