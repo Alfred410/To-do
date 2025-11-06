@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { login } from '../services/userService';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Login() {
   const location = useLocation();
@@ -10,6 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     if (location.state?.feedback) {
@@ -21,7 +23,8 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      await login(email, password);
+      const { token, user } = await login(email, password);
+      setAuth(token, user);
       navigate('/');
     } catch (err) {
       setFeedback({ type: 'error', message: err.message });
