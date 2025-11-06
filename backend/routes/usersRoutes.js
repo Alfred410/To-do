@@ -155,8 +155,8 @@ router.put('/password', async (req, res) => {
 router.put('/name', async (req, res) => {
   const { userId, firstName, lastName } = req.body;
 
-  if (!userId || !firstName || !lastName) {
-    return res.status(400).json({ message: 'Alla fält krävs' });
+  if (!userId ) {
+    return res.status(400).json({ message: 'userId krävs' });
   }
 
   try {
@@ -171,10 +171,10 @@ router.put('/name', async (req, res) => {
 
     await pgClient.query(
       'UPDATE users SET first_name=$1, last_name=$2 WHERE id=$3',
-      [firstName, lastName, userId]
+      [firstName ?? '', lastName ?? '', userId]
     );
 
-    res.json({ message: 'Namn upddaterat' });
+    res.json({ message: 'Namn uppdaterat' });
   } catch (err) {
     console.error('Fel i name route', err);
     res.status(500).json({ message: 'Server error' });

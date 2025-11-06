@@ -82,15 +82,17 @@ const ProfilePage = () => {
   const handleConfirm = async () => {
     switch (dialogType) {
       case 'profile':
-        if (!firstName.trim() || !lastName.trim()) {
-          setFeedbackType('error');
-          setFeedback('Förnamn och efternamn kan inte vara tomma.');
-          break;
-        }
         try {
-          await changeName(userId, firstName, lastName);
-          setFeedbackType('success');
-          setFeedback(`Namn uppdaterat: ${firstName} ${lastName}`);
+          if (!firstName.trim() && !lastName.trim()) {
+            await changeName(userId, firstName, lastName);
+            setFeedbackType('success');
+            setFeedback('Namn borttaget');
+            break;
+          } else {
+            await changeName(userId, firstName, lastName);
+            setFeedbackType('success');
+            setFeedback(`Namn uppdaterat till: ${firstName || ''} ${lastName || ''}`);
+          }
         } catch {
           setFeedbackType('error');
           setFeedback('Kunde inte uppdatera namn.');
@@ -326,10 +328,19 @@ const ProfilePage = () => {
         <DialogContent>
           {dialogType === 'profile' && (
             <div className="text-gray-700">
+              {(!firstName.trim() && !lastName.trim()) ? (
+                <>
+                <p>Är du säker på att du vill ta bort ditt namn?</p>
+                <p className="font-semibold text-gray-900 mt-2"> Namnet tas bort från ditt konto.</p>
+                </>
+              ):(
+              <>
               <p>Är du säker på att du vill uppdatera namn till:</p>
               <p className="font-semibold text-gray-900 mt-2">
                 {firstName} {lastName}?
               </p>
+              </>
+              )}
             </div>
           )}
           {dialogType === 'password' && (
