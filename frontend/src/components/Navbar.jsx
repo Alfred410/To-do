@@ -39,19 +39,19 @@ export default function Navbar() {
         {isOpen && (
           <div className="flex flex-col items-center gap-4 left-0 bg-gray-300 absolute w-full top-full">
             <Link to="/" className="mr-3" onClick={() => setIsOpen(!isOpen)}>
-              <HomeIcon /> Home
+              <HomeIcon /> Hem
             </Link>
             <Link
               to="profile"
               className="mr-2"
               onClick={() => setIsOpen(!isOpen)}
             >
-              <AccountCircleIcon /> Profile
+              <AccountCircleIcon /> Profil
             </Link>
 
             {isLogin ? (
               <button onClick={handleLogout}>
-                <LogoutIcon /> Logout
+                <LogoutIcon /> Logga ut
               </button>
             ) : (
               <Link
@@ -59,7 +59,7 @@ export default function Navbar() {
                 className="mr-2"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <LoginIcon /> Login
+                <LoginIcon /> Logga in
               </Link>
             )}
           </div>
@@ -68,19 +68,19 @@ export default function Navbar() {
         {/* Desktop */}
         <div className="hidden md:flex justify-end ">
           <Link to="/" className="mr-3">
-            <HomeIcon /> Home
+            <HomeIcon /> Hem
           </Link>
           <Link to="profile" className="mr-2">
-            <AccountCircleIcon /> Profile
+            <AccountCircleIcon /> Profil
           </Link>
 
           {isLogin ? (
             <button onClick={handleLogout}>
-              <LogoutIcon /> Logout
+              <LogoutIcon /> Logga ut
             </button>
           ) : (
             <Link to="/login" className="mr-2">
-              <LoginIcon /> Login
+              <LoginIcon /> Logga in
             </Link>
           )}
         </div>
