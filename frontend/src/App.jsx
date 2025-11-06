@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import Profile from './pages/ProfilePage';
+import Privacy from './pages/PrivacyPage';
 import Navbar from './components/Navbar';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </div>
   );
