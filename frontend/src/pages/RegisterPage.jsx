@@ -77,9 +77,9 @@ export default function Register() {
           />
           <p className="text-sm text-gray-500">
             Jag har läst och accepterat{' '}
-            <a href="/" className="text-blue-400">
+            <Link to="/privacy" className="text-blue-400">
               integritetspolicy
-            </a>
+            </Link>
           </p>
         </div>
         <button className="bg-indigo-600 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]">

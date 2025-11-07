@@ -1,4 +1,4 @@
-import {  useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { AuthContext } from './AuthContext';
@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   useEffect(() => {
-
     const checkToken = () => {
       const token = localStorage.getItem('token');
       if (!token) {

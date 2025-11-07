@@ -56,7 +56,7 @@ const ProfilePage = () => {
       }
     }
     fetchProfile();
-  }, [user,navigate, logout]);
+  }, [user, navigate, logout]);
 
   //Automatisk återställning av feedback-meddelande efter 4 sekunder
   useEffect(() => {
@@ -96,7 +96,9 @@ const ProfilePage = () => {
           } else {
             await changeName(firstName, lastName);
             setFeedbackType('success');
-            setFeedback(`Namn uppdaterat till: ${firstName || ''} ${lastName || ''}`);
+            setFeedback(
+              `Namn uppdaterat till: ${firstName || ''} ${lastName || ''}`
+            );
           }
         } catch {
           setFeedbackType('error');
@@ -329,18 +331,21 @@ const ProfilePage = () => {
         <DialogContent>
           {dialogType === 'profile' && (
             <div className="text-gray-700">
-              {(!firstName.trim() && !lastName.trim()) ? (
+              {!firstName.trim() && !lastName.trim() ? (
                 <>
-                <p>Är du säker på att du vill ta bort ditt namn?</p>
-                <p className="font-semibold text-gray-900 mt-2"> Namnet tas bort från ditt konto.</p>
+                  <p>Är du säker på att du vill ta bort ditt namn?</p>
+                  <p className="font-semibold text-gray-900 mt-2">
+                    {' '}
+                    Namnet tas bort från ditt konto.
+                  </p>
                 </>
-              ):(
-              <>
-              <p>Är du säker på att du vill uppdatera namn till:</p>
-              <p className="font-semibold text-gray-900 mt-2">
-                {firstName} {lastName}?
-              </p>
-              </>
+              ) : (
+                <>
+                  <p>Är du säker på att du vill uppdatera namn till:</p>
+                  <p className="font-semibold text-gray-900 mt-2">
+                    {firstName} {lastName}?
+                  </p>
+                </>
               )}
             </div>
           )}

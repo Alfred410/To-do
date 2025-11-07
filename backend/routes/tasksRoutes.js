@@ -1,6 +1,6 @@
 import express from 'express';
 import db from '../db.js';
-import { authenticateToken} from '../middleware/authMiddleware.js';
+import { authenticateToken } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.get('/', authenticateToken, async (req, res) => {
@@ -16,7 +16,7 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-router.post('/', authenticateToken,async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const { title, task_category_id } = req.body;
     const { rows } = await db.query(
@@ -48,7 +48,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
       [
         important !== undefined ? Boolean(important) : undefined,
         completed !== undefined ? Boolean(completed) : undefined,
-        id, req.userId
+        id,
+        req.userId,
       ]
     );
     if (rows.length === 0) {
@@ -67,9 +68,12 @@ router.put('/:id', authenticateToken, async (req, res) => {
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    await db.query('DELETE FROM tasks WHERE id = $1 AND user_id=$2', [id, req.userId]);
-    
-    res.json({message: 'Uppgift borttagen'});
+    await db.query('DELETE FROM tasks WHERE id = $1 AND user_id=$2', [
+      id,
+      req.userId,
+    ]);
+
+    res.json({ message: 'Uppgift borttagen' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Kunde inte radera uppgift' });

@@ -91,7 +91,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Account information GET
-router.get('/profile', authenticateToken,async (req, res) => {
+router.get('/profile', authenticateToken, async (req, res) => {
   try {
     const result = await pgClient.query(
       'SELECT id, first_name, last_name, email, created_at FROM users WHERE id=$1',
@@ -108,8 +108,8 @@ router.get('/profile', authenticateToken,async (req, res) => {
 });
 
 //Change Password PUT
-router.put('/password', authenticateToken,async (req, res) => {
-  const {currentPassword, newPassword } = req.body;
+router.put('/password', authenticateToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
 
   if (!currentPassword || !newPassword)
     return res.status(400).json({ message: 'Alla fält krävs' });

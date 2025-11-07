@@ -1,4 +1,4 @@
-import {apiFetch} from './apiClient.js';
+import { apiFetch } from './apiClient.js';
 const API_URL = `http://localhost:3000/api/user`;
 
 //LOGIN
@@ -78,7 +78,7 @@ export async function changePassword(currentPassword, newPassword) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({currentPassword, newPassword }),
+      body: JSON.stringify({ currentPassword, newPassword }),
     });
     const data = await res.json();
 

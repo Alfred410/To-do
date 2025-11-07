@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import StarIcon from '@mui/icons-material/Star';
-import {useAuth} from '../context/useAuth.jsx';
+import { useAuth } from '../context/useAuth.jsx';
 
 // Lokala kategorier som matchar databasschema
 const localCategories = [

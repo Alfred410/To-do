@@ -1,4 +1,4 @@
-import {apiFetch} from './apiClient.js';
+import { apiFetch } from './apiClient.js';
 const API_URL = 'http://localhost:3000/api/task';
 
 export async function getTasks() {
@@ -12,7 +12,7 @@ export async function getTasks() {
 
 export async function addTask(task) {
   try {
-      return await apiFetch(API_URL, {
+    return await apiFetch(API_URL, {
       method: 'POST',
       body: JSON.stringify(task),
     });
