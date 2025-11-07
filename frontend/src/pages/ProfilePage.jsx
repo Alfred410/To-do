@@ -19,7 +19,7 @@ import { useAuth } from '../context/useAuth';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const { user, setUser, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -42,8 +42,11 @@ const ProfilePage = () => {
   useEffect(() => {
     async function fetchProfile() {
       try {
+        if (!user) {
+          logout();
+          return;
+        }
         const data = await getProfile();
-        setUser(data);
         setFirstName(data.first_name);
         setLastName(data.last_name);
         setEmail(data.email);
@@ -53,7 +56,7 @@ const ProfilePage = () => {
       }
     }
     fetchProfile();
-  }, [setUser]);
+  }, [user, logout]);
 
   //Automatisk återställning av feedback-meddelande efter 4 sekunder
   useEffect(() => {
@@ -136,7 +139,6 @@ const ProfilePage = () => {
         try {
           await deleteAccount();
           localStorage.removeItem('token');
-          // localStorage.removeItem('user');
           navigate('/login', {
             state: {
               feedback: {
