@@ -5,6 +5,7 @@ import {
   updateTask,
   deleteTask,
 } from '../services/taskService';
+import { getCategories } from '../services/categoryService.js';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -12,18 +13,10 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import StarIcon from '@mui/icons-material/Star';
 import { useAuth } from '../context/useAuth.jsx';
 
-// Lokala kategorier som matchar databasschema
-const localCategories = [
-  { id: 1, name: 'Arbete' },
-  { id: 2, name: 'Privat' },
-  { id: 3, name: 'Skola' },
-  { id: 4, name: 'Shopping' },
-  { id: 5, name: 'Viktigt' },
-];
-
 export default function TodoApp() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
+  const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const { user } = useAuth();
@@ -42,6 +35,18 @@ export default function TodoApp() {
     };
     fetchTasks();
   }, [userId]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error('Fel vid hämtning av kategorier:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const addTaskHandler = async () => {
     if (!input.trim()) return;
@@ -88,10 +93,10 @@ export default function TodoApp() {
   };
 
   const categoryColor = (categoryId) => {
-    const category = localCategories.find((c) => c.id === categoryId);
+    const category = categories.find((c) => c.id === categoryId);
     if (!category) return 'bg-gray-100 text-gray-800';
 
-    switch (category.name.toLowerCase()) {
+    switch (category.task_category.toLowerCase()) {
       case 'arbete':
         return 'bg-blue-100 text-blue-700';
       case 'skola':
@@ -138,9 +143,9 @@ export default function TodoApp() {
               className="bg-gray-100 text-gray-800 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex-1 hover:bg-gray-200 transition"
             >
               <option value="">Välj kategori</option>
-              {localCategories.map((c) => (
+              {categories.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.name}
+                  {c.task_category}
                 </option>
               ))}
             </select>
@@ -191,9 +196,8 @@ export default function TodoApp() {
                     className={`ml-2 text-sm px-2 py-1 rounded-full ${categoryColor(task.task_category_id)}`}
                   >
                     {
-                      localCategories.find(
-                        (c) => c.id === task.task_category_id
-                      )?.name
+                      categories.find((c) => c.id === task.task_category_id)
+                        ?.task_category
                     }
                   </span>
                 )}

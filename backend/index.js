@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import taskRouter from './routes/tasksRoutes.js';
 import userRouter from './routes/usersRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
 
 dotenv.config({ quiet: true });
 
@@ -23,6 +24,7 @@ app.use(
 app.use(express.json());
 
 app.use('/api/task', taskRouter);
+app.use('/api/category', categoryRouter);
 app.use('/api/user', userRouter);
 
 console.log('Katalogen vi är i:', path.resolve());
