@@ -14,7 +14,7 @@ export async function login(email, password) {
     }
 
     localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+    // localStorage.setItem('user', JSON.stringify(data.user));
     return data;
   } catch (err) {
     console.error('Serverfel', err);
@@ -138,7 +138,7 @@ export async function deleteAccount() {
     }
 
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    // localStorage.removeItem('user');
 
     return data;
   } catch (err) {

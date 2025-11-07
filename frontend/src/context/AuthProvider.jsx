@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, use } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { AuthContext } from './AuthContext';
@@ -6,22 +6,28 @@ import { AuthContext } from './AuthContext';
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
-  const [user, setUser] = useState(() => {
+
+  const [tokenData, setTokenData] = useState(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
     try {
-      const saved = localStorage.getItem('user');
-      return saved ? JSON.parse(saved) : null;
+      return jwt_decode(token);
     } catch {
-      localStorage.removeItem('user');
       return null;
     }
   });
 
+  const [user, setUser] = useState(null);
+  const [logoutTimer, setLogoutTimer] = useState(null);
+
   const logout = useCallback(() => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
     setIsLogin(false);
+    setTokenData(null);
+    setUser(null);
+    if (logoutTimer) clearTimeout(logoutTimer);
     navigate('/login', { replace: true });
-  }, [navigate]);
+  }, [navigate, logoutTimer]);
 
   useEffect(() => {
     const checkToken = () => {
@@ -29,6 +35,7 @@ export const AuthProvider = ({ children }) => {
       if (!token) {
         setIsLogin(false);
         setUser(null);
+        setTokenData(null);
         return;
       }
 
@@ -39,8 +46,8 @@ export const AuthProvider = ({ children }) => {
         if (decoded.exp < now) {
           logout();
         } else {
+          setTokenData(decoded);
           setIsLogin(true);
-
           // Sätter en timer för automatisk utloggning
           const timeout = (decoded.exp - now) * 1000;
           const timer = setTimeout(logout, timeout);
@@ -61,15 +68,18 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [logout]);
 
-  const setAuth = (token, newUser) => {
+  const setAuth = (token) => {
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(newUser));
     setIsLogin(true);
-    setUser(newUser);
+    try {
+      setUser(jwt_decode(token));
+    } catch {
+      setUser(null);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, setAuth, logout }}>
+    <AuthContext.Provider value={{ isLogin, user, setUser, setAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );

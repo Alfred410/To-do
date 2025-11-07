@@ -24,7 +24,7 @@ export default function Login() {
 
     try {
       const { token, user } = await login(email, password);
-      setAuth(token, user);
+      setAuth(token);
       navigate('/');
     } catch (err) {
       setFeedback({ type: 'error', message: err.message });
