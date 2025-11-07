@@ -6,6 +6,10 @@ import { AuthContext } from './AuthContext';
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
 
   const logout = useCallback(() => {
     localStorage.removeItem('token');
@@ -20,6 +24,7 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (!token) {
         setIsLogin(false);
+        setUser(null);
         return;
       }
 
@@ -52,14 +57,15 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [logout]);
 
-  const setAuth = (token, user) => {
+  const setAuth = (token, newUser) => {
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(newUser));
     setIsLogin(true);
+    setUser(newUser);
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, setAuth, logout }}>
+    <AuthContext.Provider value={{ isLogin, user, setAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );
