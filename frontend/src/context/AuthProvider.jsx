@@ -7,8 +7,13 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      localStorage.removeItem('user');
+      return null;
+    }
   });
 
   const logout = useCallback(() => {
