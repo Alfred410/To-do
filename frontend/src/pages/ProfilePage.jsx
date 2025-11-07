@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   getProfile,
   changeName,
@@ -306,9 +307,12 @@ const ProfilePage = () => {
         <div className={dividerClass} />
 
         <div className="mb-10 text-center">
-          <a href="#" className="text-blue-600 underline hover:text-blue-500">
+          <Link
+            to="/privacy"
+            className="text-blue-600 underline hover:text-blue-500"
+          >
             Läs vår integritetspolicy och GDPR-information
-          </a>
+          </Link>
         </div>
 
         <button

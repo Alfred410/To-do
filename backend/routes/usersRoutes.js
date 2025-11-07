@@ -64,7 +64,7 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!email || !password) {
     return res.status(400).json({ message: 'Alla fält krävs' });
   }
   try {
