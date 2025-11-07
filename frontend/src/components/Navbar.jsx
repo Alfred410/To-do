@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import HomeIcon from '@mui/icons-material/Home';
@@ -9,7 +9,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState('');
+  const [isOpen, setIsOpen] = useState();
   const { isLogin, logout } = useAuth();
   const navigate = useNavigate();
 

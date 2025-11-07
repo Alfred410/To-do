@@ -3,6 +3,7 @@ import pgClient from '../db.js';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -54,7 +55,7 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (err) {
-    console.error(err);
+    console.error('Fel vid inloggning', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -90,17 +91,11 @@ router.post('/register', async (req, res) => {
 });
 
 // Account information GET
-router.get('/profile', async (req, res) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) return res.status(400).json({ message: 'Token saknas' });
-
+router.get('/profile', authenticateToken, async (req, res) => {
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
     const result = await pgClient.query(
       'SELECT id, first_name, last_name, email, created_at FROM users WHERE id=$1',
-      [user.id]
+      [req.userId]
     );
 
     if (result.rows.length === 0)
@@ -113,17 +108,17 @@ router.get('/profile', async (req, res) => {
 });
 
 //Change Password PUT
-router.put('/password', async (req, res) => {
-  const { userId, currentPassword, newPassword } = req.body;
+router.put('/password', authenticateToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
 
-  if (!userId || !currentPassword || !newPassword)
+  if (!currentPassword || !newPassword)
     return res.status(400).json({ message: 'Alla fält krävs' });
 
   try {
     //kolla gammalt lösen
     const userResult = await pgClient.query(
       'SELECT id, password FROM users WHERE id=$1',
-      [userId]
+      [req.userId]
     );
 
     if (userResult.rows.length === 0) {
@@ -141,7 +136,7 @@ router.put('/password', async (req, res) => {
 
     await pgClient.query('UPDATE users SET password=$1 WHERE id=$2', [
       hashedPassword,
-      userId,
+      req.userId,
     ]);
 
     res.json({ message: 'Lösenord uppdaterat' });
@@ -152,17 +147,13 @@ router.put('/password', async (req, res) => {
 });
 
 //Change Name PUT
-router.put('/name', async (req, res) => {
-  const { userId, firstName, lastName } = req.body;
-
-  if (!userId ) {
-    return res.status(400).json({ message: 'userId krävs' });
-  }
+router.put('/name', authenticateToken, async (req, res) => {
+  const { firstName, lastName } = req.body;
 
   try {
     const userResult = await pgClient.query(
       'SELECT id FROM users WHERE id=$1',
-      [userId]
+      [req.userId]
     );
 
     if (userResult.rows.length === 0) {
@@ -171,7 +162,7 @@ router.put('/name', async (req, res) => {
 
     await pgClient.query(
       'UPDATE users SET first_name=$1, last_name=$2 WHERE id=$3',
-      [firstName ?? '', lastName ?? '', userId]
+      [firstName ?? '', lastName ?? '', req.userId]
     );
 
     res.json({ message: 'Namn uppdaterat' });
@@ -182,11 +173,9 @@ router.put('/name', async (req, res) => {
 });
 
 //Delete Account DELETE
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-
+router.delete('/delete', authenticateToken, async (req, res) => {
   try {
-    await pgClient.query('DELETE FROM users WHERE id=$1', [id]);
+    await pgClient.query('DELETE FROM users WHERE id=$1', [req.userId]);
     res.json({ message: 'Kontot borttaget' });
   } catch (err) {
     console.error(err);

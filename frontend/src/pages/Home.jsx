@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import StarIcon from '@mui/icons-material/Star';
+import { useAuth } from '../context/useAuth.jsx';
 
 // Lokala kategorier som matchar databasschema
 const localCategories = [
@@ -20,14 +21,17 @@ const localCategories = [
   { id: 5, name: 'Viktigt' },
 ];
 
-const userId = 1;
-
 export default function TodoApp() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
+  const { user } = useAuth();
+  const userId = user?.id;
+
   useEffect(() => {
+    if (!userId) return;
+
     const fetchTasks = async () => {
       try {
         const data = await getTasks(userId);
@@ -37,13 +41,12 @@ export default function TodoApp() {
       }
     };
     fetchTasks();
-  }, []);
+  }, [userId]);
 
   const addTaskHandler = async () => {
     if (!input.trim()) return;
 
     const newTask = await addTask({
-      user_id: userId,
       title: input,
       task_category_id: selectedCategoryId,
     });
@@ -69,6 +72,7 @@ export default function TodoApp() {
   const toggleImportant = async (id) => {
     try {
       const task = tasks.find((t) => t.id === id);
+      if (!task) return;
       const updated = await updateTask(id, {
         important: !task.important,
       });
