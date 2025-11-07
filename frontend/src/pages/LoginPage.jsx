@@ -23,7 +23,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const { token, user } = await login(email, password);
+      const { token } = await login(email, password);
       setAuth(token);
       navigate('/');
     } catch (err) {
