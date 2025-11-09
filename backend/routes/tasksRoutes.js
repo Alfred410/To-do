@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
+import { encrypt, decrypt } from '../utils/crypto.js'; 
 const router = express.Router();
 
 router.get('/', authenticateToken, async (req, res) => {
@@ -9,7 +10,14 @@ router.get('/', authenticateToken, async (req, res) => {
       `SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC`,
       [req.userId]
     );
-    res.json(rows);
+
+    // Dekryptera titlar innan de skickas till klienten
+    const decryptedRows = rows.map(task => ({
+      ...task,
+      title: decrypt(task.title),
+    }));
+
+    res.json(decryptedRows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Kunde inte hämta uppgifter' });
@@ -19,12 +27,18 @@ router.get('/', authenticateToken, async (req, res) => {
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { title, task_category_id } = req.body;
+    const encryptedTitle = encrypt(title);
+    
     const { rows } = await db.query(
       `INSERT INTO tasks (user_id, title, task_category_id)
             VALUES ($1, $2, $3)
             RETURNING *`,
-      [req.userId, title, task_category_id || null]
+      [req.userId, encryptedTitle, task_category_id || null]
     );
+
+    // Dekryptera titeln innan svar skickas till klienten
+    rows[0].title = decrypt(rows[0].title);
+
     res.status(201).json(rows[0]);
   } catch (err) {
     console.error(err);
