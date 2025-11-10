@@ -25,8 +25,8 @@ export default function privacyPage() {
               hemsidan.
             </li>
             <li>
-              <strong>Todo-listor och uppgifter</strong> för att du ska kunna
-              använda hemsidans funktioner
+              <strong>Task / Todo-listor:</strong> de uppgifter du skapar,
+              ändrar elelr tar bort på hemsidan.
             </li>
           </ul>
         </section>
@@ -35,6 +35,10 @@ export default function privacyPage() {
           <h2 className="font-semibold mb-3 text-lg">
             Hur vi behandlar uppgifterna
           </h2>
+          <p className="mb-3">
+            Vi behandlar dina uppgifter för att kunna tillhandahålla hemsidans
+            funktioner och säkerställa att tjänsten fungerar korrekt.
+          </p>
           <ul className=" list-inside  pl-4">
             <li>
               <strong>E-postadress</strong> används för att identifiera dig och
@@ -46,7 +50,7 @@ export default function privacyPage() {
             </li>
             <li>
               <strong>Todo-listor och uppgifter</strong> sparas för att du ska
-              kunna använda tjänsten
+              kunna använda tjänsten fullt ut.
             </li>
           </ul>
           <p className="underline pl-4">
@@ -55,13 +59,49 @@ export default function privacyPage() {
           </p>
         </section>
 
+        <section className="text-sm mb-10">
+          <h2 className="font-semibold mb-3 text-lg">
+            Personuppgiftsdelning och säkerhet
+          </h2>
+          <p>Vi delar dina uppgifter endast med:</p>
+          <ul className="list-inside pl-4">
+            <li>
+              Hosting-leverantörer och tekniska partners som behövs för
+              tjänsten.
+            </li>
+            <li>Tredje part om vi ör syldiga enligt lag.</li>
+          </ul>
+          <p className="mt-2">Dina uppgifter överförs aldrig utanför EU/EES</p>
+        </section>
+
+        <section className="text-sm mb-10">
+          <h2 className="font-semibold mb-3 text-lg">Dina rättigheter</h2>
+          <p>Du har rätt att kontakta oss för att:</p>
+          <ul className="list-inside pl-4">
+            <li>Få ut information om de upggifter vi har om dig</li>
+            <li>
+              Begära rättelse, överföring, begränsning, invändning eller
+              radering
+            </li>
+          </ul>
+          <p>Klagomål kan skickas till Integritetsskyddsmyndigheten (IMY)</p>
+        </section>
+
         <section className="text-sm">
           <h2 className="font-semibold mb-3 text-lg">Kontakt</h2>
           <p>
-            Om du har frågor hur vi hanterar din uppgifter kan du kontakta oss
-            via e-post:{' '}
+            Personuppgiftsansvarig: TODO-APP AB <br />
+            Adress: Todo gatan 3 <br />
+            Organisationsnummer: 0945894754479 <br />
+            E-post/Telefon{' '}
             <span className="text-blue-600 underline hover:text-blue-800">
               support@todo.se
+            </span>
+          </p>
+          <p>
+            Dataskyddsombud nås på:{' '}
+            <span className="text-blue-600 underline hover:text-blue-800">
+              dataskydd@todo.se
             </span>
           </p>
         </section>
