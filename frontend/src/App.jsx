@@ -1,5 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/LoginPage'));
 const Register = lazy(() => import('./pages/RegisterPage'));
@@ -7,7 +8,6 @@ const Profile = lazy(() => import('./pages/ProfilePage'));
 const Privacy = lazy(() => import('./pages/PrivacyPage'));
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import { lazy, Suspense } from 'react';
 
 const Loader = () => <div>Loading...</div>;
 
