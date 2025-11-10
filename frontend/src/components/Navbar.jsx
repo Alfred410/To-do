@@ -1,12 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { useAuth } from '../context/useAuth';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
+const MenuIcon = lazy(() => import('@mui/icons-material/Menu'));
+const CloseIcon = lazy(() => import('@mui/icons-material/Close'));
+const HomeIcon = lazy(() => import('@mui/icons-material/Home'));
+const AccountCircleIcon = lazy(
+  () => import('@mui/icons-material/AccountCircle')
+);
+const LoginIcon = lazy(() => import('@mui/icons-material/Login'));
+const LogoutIcon = lazy(() => import('@mui/icons-material/Logout'));
+
+const LazyIcon = ({ children }) => (
+  <Suspense fallback={<span className="w-5 h-5 inline-block" />}>
+    {children}
+  </Suspense>
+);
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState();
@@ -24,7 +32,7 @@ export default function Navbar() {
       <nav className="flex relative md:justify-end items-center p-4">
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <CloseIcon /> : <MenuIcon />}
+            <LazyIcon>{isOpen ? <CloseIcon /> : <MenuIcon />}</LazyIcon>
           </button>
         </div>
         <Link
@@ -39,19 +47,28 @@ export default function Navbar() {
         {isOpen && (
           <div className="flex flex-col items-center gap-4 left-0 bg-gray-300 absolute w-full top-full">
             <Link to="/" className="mr-3" onClick={() => setIsOpen(!isOpen)}>
-              <HomeIcon /> Hem
+              <LazyIcon>
+                <HomeIcon />
+              </LazyIcon>
+              Hem
             </Link>
             <Link
               to="profile"
               className="mr-2"
               onClick={() => setIsOpen(!isOpen)}
             >
-              <AccountCircleIcon /> Profil
+              <LazyIcon>
+                <AccountCircleIcon />
+              </LazyIcon>
+              Profil
             </Link>
 
             {isLogin ? (
               <button onClick={handleLogout}>
-                <LogoutIcon /> Logga ut
+                <LazyIcon>
+                  <LogoutIcon />
+                </LazyIcon>
+                Logga ut
               </button>
             ) : (
               <Link
@@ -59,7 +76,10 @@ export default function Navbar() {
                 className="mr-2"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <LoginIcon /> Logga in
+                <LazyIcon>
+                  <LoginIcon />
+                </LazyIcon>
+                Logga in
               </Link>
             )}
           </div>
@@ -68,35 +88,34 @@ export default function Navbar() {
         {/* Desktop */}
         <div className="hidden md:flex justify-end ">
           <Link to="/" className="mr-3">
-            <HomeIcon /> Hem
+            <LazyIcon>
+              <HomeIcon />
+            </LazyIcon>
+            Hem
           </Link>
           <Link to="profile" className="mr-2">
-            <AccountCircleIcon /> Profil
+            <LazyIcon>
+              <AccountCircleIcon />
+            </LazyIcon>
+            Profil
           </Link>
 
           {isLogin ? (
             <button onClick={handleLogout}>
-              <LogoutIcon /> Logga ut
+              <LazyIcon>
+                <LogoutIcon />
+              </LazyIcon>
+              Logga ut
             </button>
           ) : (
             <Link to="/login" className="mr-2">
-              <LoginIcon /> Logga in
+              <LazyIcon>
+                <LoginIcon />
+              </LazyIcon>
+              Logga in
             </Link>
           )}
         </div>
-
-        {/* <Link to="/" className="mr-3">
-          Home
-        </Link>
-        <Link to="/login" className="mr-2">
-          Login
-        </Link>
-        <Link to="register" className="mr-2">
-          Register
-        </Link>
-        <Link to="profile" className="mr-2">
-          Profile
-        </Link> */}
       </nav>
     </header>
   );
