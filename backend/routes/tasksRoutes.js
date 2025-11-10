@@ -71,6 +71,11 @@ router.put('/:id', authenticateToken, async (req, res) => {
         .status(404)
         .json({ error: `Ingen uppgift hittades med id ${id}` });
     }
+    
+    // Dekryptera titeln innan svar skickas till klienten
+    if (rows[0].title) {
+      rows[0].title = decrypt(rows[0].title);
+    }
 
     res.json(rows[0]);
   } catch (err) {
