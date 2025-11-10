@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, use } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { AuthContext } from './AuthContext';
@@ -7,23 +7,12 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
 
-  const [tokenData, setTokenData] = useState(() => {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-    try {
-      return jwt_decode(token);
-    } catch {
-      return null;
-    }
-  });
-
   const [user, setUser] = useState(null);
-  const [logoutTimer, setLogoutTimer] = useState(null);
+  const [logoutTimer] = useState(null);
 
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     setIsLogin(false);
-    setTokenData(null);
     setUser(null);
     if (logoutTimer) clearTimeout(logoutTimer);
     navigate('/login', { replace: true });
@@ -35,7 +24,6 @@ export const AuthProvider = ({ children }) => {
       if (!token) {
         setIsLogin(false);
         setUser(null);
-        setTokenData(null);
         return;
       }
 
@@ -46,7 +34,6 @@ export const AuthProvider = ({ children }) => {
         if (decoded.exp < now) {
           logout();
         } else {
-          setTokenData(decoded);
           setIsLogin(true);
           // Sätter en timer för automatisk utloggning
           const timeout = (decoded.exp - now) * 1000;
