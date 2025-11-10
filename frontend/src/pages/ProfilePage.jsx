@@ -231,7 +231,6 @@ const ProfilePage = () => {
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="Nuvarande lösenord"
-              autoComplete="current-password"
               className={passwordInputClass}
             />
             <IconButton
