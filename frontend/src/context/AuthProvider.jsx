@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { AuthContext } from './AuthContext';
@@ -8,15 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(!!localStorage.getItem('token'));
 
   const [user, setUser] = useState(null);
-  const [logoutTimer] = useState(null);
+  const logoutTimerRef = useRef(null);
 
   const logout = useCallback(() => {
     localStorage.removeItem('token');
     setIsLogin(false);
     setUser(null);
-    if (logoutTimer) clearTimeout(logoutTimer);
+    if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
     navigate('/login', { replace: true });
-  }, [navigate, logoutTimer]);
+  }, [navigate, logoutTimerRef]);
 
   useEffect(() => {
     const checkToken = () => {
@@ -35,10 +35,11 @@ export const AuthProvider = ({ children }) => {
           logout();
         } else {
           setIsLogin(true);
+          setUser(decoded);
           // Sätter en timer för automatisk utloggning
           const timeout = (decoded.exp - now) * 1000;
-          const timer = setTimeout(logout, timeout);
-          return () => clearTimeout(timer);
+          if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
+          logoutTimerRef.current = setTimeout(logout, timeout);
         }
       } catch {
         logout();
@@ -52,7 +53,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
+    };
   }, [logout]);
 
   const setAuth = (token) => {
@@ -66,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, setUser, setAuth, logout }}>
+    <AuthContext.Provider value={{ isLogin, user, setAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );

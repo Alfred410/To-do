@@ -41,11 +41,15 @@ const ProfilePage = () => {
   //Hämta profilinfo från databasen
   useEffect(() => {
     async function fetchProfile() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+      logout();
+      return;
+      }
+
+      if (!user) return;
+        
       try {
-        if (!user) {
-          logout();
-          return;
-        }
         const data = await getProfile();
         setFirstName(data.first_name);
         setLastName(data.last_name);
