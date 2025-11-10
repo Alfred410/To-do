@@ -72,8 +72,8 @@ router.put('/:id', authenticateToken, async (req, res) => {
         .json({ error: `Ingen uppgift hittades med id ${id}` });
     }
 
-    // Dekryptera titeln innan svar skickas till klienten
-    if (rows[0].title) {
+    // Dekryptera title om den finns och är en icke-tom sträng innan svar skickas till klienten
+    if (typeof rows[0].title === 'string' && rows[0].title.length > 0) {
       rows[0].title = decrypt(rows[0].title);
     }
 
