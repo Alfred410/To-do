@@ -1,7 +1,7 @@
 import express from 'express';
 import db from '../db.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
-import { encrypt, decrypt } from '../utils/crypto.js'; 
+import { encrypt, decrypt } from '../utils/crypto.js';
 const router = express.Router();
 
 router.get('/', authenticateToken, async (req, res) => {
@@ -12,7 +12,7 @@ router.get('/', authenticateToken, async (req, res) => {
     );
 
     // Dekryptera titlar innan de skickas till klienten
-    const decryptedRows = rows.map(task => ({
+    const decryptedRows = rows.map((task) => ({
       ...task,
       title: decrypt(task.title),
     }));
@@ -28,7 +28,7 @@ router.post('/', authenticateToken, async (req, res) => {
   try {
     const { title, task_category_id } = req.body;
     const encryptedTitle = encrypt(title);
-    
+
     const { rows } = await db.query(
       `INSERT INTO tasks (user_id, title, task_category_id)
             VALUES ($1, $2, $3)
@@ -71,7 +71,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
         .status(404)
         .json({ error: `Ingen uppgift hittades med id ${id}` });
     }
-    
+
     // Dekryptera titeln innan svar skickas till klienten
     if (rows[0].title) {
       rows[0].title = decrypt(rows[0].title);

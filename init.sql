@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS tasks CASCADE;
 DROP TABLE IF EXISTS task_categories CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 
+
 -- ========================================
 -- USERS
 -- ========================================
@@ -32,6 +33,7 @@ CREATE TABLE task_categories (
     task_category VARCHAR(50) NOT NULL UNIQUE
 );
 
+
 -- ========================================
 -- TASKS
 -- ========================================
@@ -46,11 +48,7 @@ CREATE TABLE tasks (
 );
 
 CREATE INDEX idx_tasks_user_id ON tasks(user_id);
-CREATE INDEX idx_tasks_category_id ON tasks(task_category_id);
-
-
-
-
+CREATE INDEX idx_tasks_user_created_at ON tasks (user_id, created_at DESC);
 
 
 -- ========================================
@@ -70,21 +68,21 @@ CREATE TABLE user_consents (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     user_consent_type_id INTEGER NOT NULL REFERENCES user_consent_types(id) ON DELETE CASCADE,
     accepted BOOLEAN NOT NULL,
-    accepted_at TIMESTAMPTZ DEFAULT NOW(),
-    version VARCHAR(10)
+    accepted_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX idx_user_consents_user_id ON user_consents(user_id);
 CREATE INDEX idx_user_consents_type_id ON user_consents(user_consent_type_id);
+
 
 -- ========================================
 -- USERS
 -- ========================================
 INSERT INTO users (first_name, last_name, email, password)
 VALUES
-('anna', 'andersson', 'anna@example.com', '$2b$12$abc123hashedpasswordexample'),
-('erik', 'eriksson', 'erik@example.com', '$2b$12$def456hashedpasswordexample'),
-('lisa', 'lisasson', 'lisa@example.com', '$2b$12$ghi789hashedpasswordexample');
+('anna', 'exempel', 'anna@example.com', '$2b$12$abc123hashedpasswordexample'),
+('erik', 'exempel', 'erik@example.com', '$2b$12$def456hashedpasswordexample'),
+('lisa', 'exempel', 'lisa@example.com', '$2b$12$ghi789hashedpasswordexample');
 
 
 -- ========================================
@@ -98,6 +96,7 @@ VALUES
 ('Shopping'),
 ('Viktigt');
 
+
 -- ========================================
 -- TASKS
 -- ========================================
@@ -110,22 +109,19 @@ VALUES
 (3, 4, 'Beställa ny laptop', FALSE, NOW());
 
 
-
 -- ========================================
 -- USER CONSENT TYPES
 -- ========================================
-
 INSERT INTO user_consent_types (consent_type)
 VALUES
 ('Terms of Service'),
 ('Privacy Policy'),
 ('Email Notifications');
 
+
 -- ========================================
 -- USER CONSENTS
 -- ========================================
-
-
 INSERT INTO user_consents (user_id, user_consent_type_id, accepted, accepted_at)
 VALUES
 (1, 1, TRUE, NOW()),
