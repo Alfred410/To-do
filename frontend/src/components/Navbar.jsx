@@ -28,7 +28,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className=" bg-gray-500  sticky top-0 z-10 shadow-md text-white ">
+    <header className=" bg-purple-900  sticky top-0 z-10 shadow-md text-white ">
       <nav className="flex relative md:justify-end items-center p-4">
         <div className="md:hidden">
           <button onClick={() => setIsOpen(!isOpen)}>
