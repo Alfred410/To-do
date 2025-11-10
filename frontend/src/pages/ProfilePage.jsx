@@ -189,14 +189,14 @@ const ProfilePage = () => {
         <div className={dividerClass} />
 
         <div className="mb-4">
-          <label className={labelClass}>Förnamn</label>
+          <label className={labelClass}>Förnamn (valfritt)</label>
           <input
             type="text"
             className={inputClass}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
-          <label className={labelClass}>Efternamn</label>
+          <label className={labelClass}>Efternamn (valfritt)</label>
           <input
             type="text"
             className={inputClass}
