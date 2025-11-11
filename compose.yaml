@@ -2,24 +2,21 @@ services:
   backend:
     build: ./backend
     depends_on:
-      database:
-        condition: service_healthy
+      - database
     environment:
       - PGURI=postgres://postgres:secret@database/postgres
     ports:
       - "3000:3000"
-    env_file:
-      - ./backend/.env
   database:
     environment:
       - POSTGRES_PASSWORD=secret
     healthcheck:
       interval: 1s
       test: "pg_isready --username=postgres"
-    image: postgres
+    image: postgres:15
     volumes:
-      - ./data:/var/lib/postgresql
-      - ./init.sql:/docker-entrypoint.initdb.d/init.sql:ro
+      - ./data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
   frontend:
     build: ./frontend
     ports:
