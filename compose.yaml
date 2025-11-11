@@ -8,6 +8,8 @@ services:
       - PGURI=postgres://postgres:secret@database/postgres
     ports:
       - "3000:3000"
+    env_file:
+      - ./backend/.env
   database:
     environment:
       - POSTGRES_PASSWORD=secret
@@ -26,3 +28,5 @@ services:
       - backend
     environment:
       - VITE_API_URL=http://backend:3000
+volumes:
+  data:
