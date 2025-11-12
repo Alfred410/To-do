@@ -1,13 +1,10 @@
 import express from 'express';
 import pgClient from '../db.js';
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { authenticateToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-
-dotenv.config();
 
 //Login POST
 router.post('/login', async (req, res) => {

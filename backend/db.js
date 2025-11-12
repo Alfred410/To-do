@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
+import path from 'path';
 import { Client } from 'pg';
 
-dotenv.config({ quiet: true });
+dotenv.config({ path: path.resolve('../.env') });
 
 const pgClient = new Client({
   connectionString: process.env.PGURI,

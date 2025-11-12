@@ -1,5 +1,5 @@
 import { apiFetch } from './apiClient.js';
-const API_URL = 'http://localhost:3000/api/category';
+const API_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/category`;
 
 export async function getCategories() {
   try {
