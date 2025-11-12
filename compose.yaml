@@ -5,14 +5,14 @@ services:
       database:      
         condition: service_healthy
     env_file:
-      - .env
+      - ./backend/.env
     ports:
       - "3000:3000"
 
   database:
     image: postgres:15
     env_file:
-      - .env
+      - ./db/.env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -28,6 +28,6 @@ services:
     depends_on:
       - backend
     env_file:
-      - .env
+      - ./frontend/.env
 volumes:
   data:
