@@ -5,7 +5,9 @@ services:
       database:      
         condition: service_healthy
     env_file:
-      - ./backend/.env
+      - ./backend/.env.docker
+    environment:
+      - NODE_ENV=production
     ports:
       - "3000:3000"
 
