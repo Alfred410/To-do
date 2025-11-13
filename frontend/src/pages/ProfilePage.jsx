@@ -164,12 +164,12 @@ const ProfilePage = () => {
   };
 
   const inputClass =
-    'w-full p-2 border rounded-lg mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none';
+    'w-full p-2 border rounded-lg mb-2 focus:ring-2 focus:ring-purple-400 focus:outline-none';
   const labelClass = 'block text-gray-800 font-semibold mb-2';
   const buttonClass =
-    'w-full p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition mb-2 mt-2';
+    'w-full p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition mb-2 mt-2';
   const passwordDivClass =
-    'flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-indigo-400 mb-2';
+    'flex items-center border rounded-lg focus-within:ring-2 focus-within:ring-purple-400 mb-2';
   const passwordInputClass = 'flex-1 p-2 text-gray-800 outline-none';
   const dividerClass = 'border-t border-gray-300 my-6';
 
@@ -198,6 +198,7 @@ const ProfilePage = () => {
             type="text"
             className={inputClass}
             value={firstName}
+            placeholder='Förnamn'
             onChange={(e) => setFirstName(e.target.value)}
           />
           <label className={labelClass}>Efternamn (valfritt)</label>
@@ -205,6 +206,7 @@ const ProfilePage = () => {
             type="text"
             className={inputClass}
             value={lastName}
+            placeholder='Efternamn'
             onChange={(e) => setLastName(e.target.value)}
           />
 
@@ -360,7 +362,7 @@ const ProfilePage = () => {
             </p>
           )}
           {dialogType === 'delete' && (
-            <div className="text-red-600 font-medium">
+            <div className="text-gray-00 font-medium">
               <p>
                 Är du säker på att du vill <strong>ta bort ditt konto</strong>?
               </p>
@@ -380,7 +382,7 @@ const ProfilePage = () => {
             className={`px-4 py-2 rounded-lg text-white transition ${
               dialogType === 'delete'
                 ? 'bg-red-600 hover:bg-red-500'
-                : 'bg-indigo-600 hover:bg-indigo-500'
+                : 'bg-purple-600 hover:bg-purple-500'
             }`}
           >
             Bekräfta

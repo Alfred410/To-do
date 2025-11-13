@@ -126,7 +126,7 @@ export default function TodoApp() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Lägg till ny uppgift..."
             maxLength={32}
-            className="w-full sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 addTaskHandler();
@@ -142,7 +142,7 @@ export default function TodoApp() {
                   e.target.value ? Number(e.target.value) : null
                 )
               }
-              className="bg-gray-100 text-gray-800 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex-1 hover:bg-gray-200 transition"
+              className="bg-gray-100 text-gray-800 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 hover:bg-gray-200 transition"
             >
               <option value="">Välj kategori</option>
               {categories.map((c) => (
@@ -153,7 +153,7 @@ export default function TodoApp() {
             </select>
             <button
               onClick={addTaskHandler}
-              className="bg-indigo-600 text-white p-2 px-3 rounded-lg hover:bg-indigo-500 transition"
+              className="bg-purple-600 text-white p-2 px-3 rounded-lg hover:bg-purple-500 transition"
             >
               <AddIcon />
             </button>
