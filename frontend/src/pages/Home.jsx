@@ -97,16 +97,16 @@ export default function TodoApp() {
     if (!category) return 'bg-purple-100 text-purple-800';
 
     switch (category.task_category) {
-      case 'Arbete':
-        return 'bg-yellow-100 text-yellow-700';
+      case 'arbete':
+        return 'bg-green-100 text-green-700';
       case 'Privat':
         return 'bg-blue-100 text-blue-800';
       case 'Skola':
-        return 'bg-orange-100 text-orange-700';
+        return 'bg-purple-100 text-purple-700';
       case 'Shopping':
         return 'bg-pink-100 text-pink-800';
       case 'Viktigt':
-        return 'bg-red-100 text-red-700';
+        return 'bg-yellow-100 text-yellow-700';
       default:
         return 'bg-purple-100 text-purple-800';
     }
