@@ -94,19 +94,21 @@ export default function TodoApp() {
 
   const categoryColor = (categoryId) => {
     const category = categories.find((c) => c.id === categoryId);
-    if (!category) return 'bg-gray-100 text-gray-800';
+    if (!category) return 'bg-purple-100 text-purple-800';
 
-    switch (category.task_category.toLowerCase()) {
-      case 'arbete':
-        return 'bg-blue-100 text-blue-700';
-      case 'skola':
-        return 'bg-purple-100 text-purple-700';
-      case 'privat':
-        return 'bg-gray-100 text-gray-800';
-      case 'viktig':
+    switch (category.task_category) {
+      case 'Arbete':
         return 'bg-yellow-100 text-yellow-700';
+      case 'Privat':
+        return 'bg-blue-100 text-blue-800';
+      case 'Skola':
+        return 'bg-orange-100 text-orange-700';
+      case 'Shopping':
+        return 'bg-pink-100 text-pink-800';
+      case 'Viktigt':
+        return 'bg-red-100 text-red-700';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-purple-100 text-purple-800';
     }
   };
 
