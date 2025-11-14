@@ -198,7 +198,7 @@ const ProfilePage = () => {
             type="text"
             className={inputClass}
             value={firstName}
-            placeholder="Förnamn"
+            placeholder="Förnamn (valfritt)"
             onChange={(e) => setFirstName(e.target.value)}
           />
           <label className={labelClass}>Efternamn (valfritt)</label>
@@ -206,7 +206,7 @@ const ProfilePage = () => {
             type="text"
             className={inputClass}
             value={lastName}
-            placeholder="Efternamn"
+            placeholder="Efternamn (valfritt)"
             onChange={(e) => setLastName(e.target.value)}
           />
 

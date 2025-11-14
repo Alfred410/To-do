@@ -45,7 +45,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {isOpen && (
-          <div className="flex flex-col items-center gap-4 left-0 bg-purple-300 absolute w-full top-full">
+          <div className="flex flex-col items-center gap-4 left-0 bg-purple-500/95 absolute w-full top-full">
             <Link to="/" className="mr-3" onClick={() => setIsOpen(!isOpen)}>
               <LazyIcon>
                 <HomeIcon />
