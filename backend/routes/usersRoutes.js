@@ -59,9 +59,9 @@ router.post('/login', async (req, res) => {
 
 //Register POST
 router.post('/register', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, privacyAccepted } = req.body;
 
-  if (!email || !password) {
+  if (!email || !password || !privacyAccepted) {
     return res.status(400).json({ message: 'Alla fält krävs' });
   }
   try {
@@ -75,14 +75,29 @@ router.post('/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Skapa användare
     const result = await pgClient.query(
-      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id, first_name, last_name, email, created_at',
+      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id',
       [firstName, lastName, email, hashedPassword]
     );
 
-    res.status(201).json(result.rows[0]);
+    const userId = result.rows[0].id;
+
+    // Spara consent om checkboxen var ikryssad
+    if (privacyAccepted) {
+      await pgClient.query(
+        `INSERT INTO user_consents (user_id, user_consent_type_id, accepted) 
+         VALUES ($1, 2, TRUE)`,
+        [userId]
+      );
+    }
+
+    res.status(201).json({
+      id: userId,
+      message: 'Registrering lyckades',
+    });
   } catch (err) {
-    console.error(err);
+    console.error('Fel vid registrering:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

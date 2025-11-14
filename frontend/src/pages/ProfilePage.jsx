@@ -43,12 +43,12 @@ const ProfilePage = () => {
     async function fetchProfile() {
       const token = localStorage.getItem('token');
       if (!token) {
-      logout();
-      return;
+        logout();
+        return;
       }
 
       if (!user) return;
-        
+
       try {
         const data = await getProfile();
         setFirstName(data.first_name);
@@ -198,7 +198,7 @@ const ProfilePage = () => {
             type="text"
             className={inputClass}
             value={firstName}
-            placeholder='Förnamn'
+            placeholder="Förnamn"
             onChange={(e) => setFirstName(e.target.value)}
           />
           <label className={labelClass}>Efternamn (valfritt)</label>
@@ -206,7 +206,7 @@ const ProfilePage = () => {
             type="text"
             className={inputClass}
             value={lastName}
-            placeholder='Efternamn'
+            placeholder="Efternamn"
             onChange={(e) => setLastName(e.target.value)}
           />
 

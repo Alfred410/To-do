@@ -9,11 +9,12 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [feedback, setFeedback] = useState('');
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(firstName, lastName, email, password);
+      await register(firstName, lastName, email, password, privacyAccepted);
       setFeedback({ type: 'success', message: 'Registrering lyckades' });
       navigate('/login');
     } catch (err) {
@@ -95,6 +96,8 @@ export default function Register() {
             type="checkbox"
             className="mr-2 border rounded py-1 pl-2"
             required
+            checked={privacyAccepted}
+            onChange={(e) => setPrivacyAccepted(e.target.checked)}
           />
           <p className="text-sm text-gray-500">
             Jag har läst och accepterat{' '}

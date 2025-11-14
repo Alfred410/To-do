@@ -1,10 +1,9 @@
 import dotenv from 'dotenv';
 import path from 'path';
-import { Client } from 'pg';;
+import { Client } from 'pg';
 
-const envFile = process.env.NODE_ENV === 'production' 
-  ? '.env.docker'
-  : '.env.local';
+const envFile =
+  process.env.NODE_ENV === 'production' ? '.env.docker' : '.env.local';
 
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 console.log('✅ Loaded env file for DB:', envFile);

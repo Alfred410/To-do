@@ -71,10 +71,6 @@ CREATE TABLE user_consents (
     accepted_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_user_consents_user_id ON user_consents(user_id);
-CREATE INDEX idx_user_consents_type_id ON user_consents(user_consent_type_id);
-
-
 -- ========================================
 -- USERS
 -- ========================================

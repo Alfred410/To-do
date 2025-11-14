@@ -6,12 +6,12 @@ const IV_LENGTH = 12;
 
 export function encrypt(text) {
   if (!process.env.ENCRYPTION_SECRET) {
-  throw new Error('ENCRYPTION_SECRET måste sättas i miljön');
-}
-const KEY = crypto
-  .createHash('sha256')
-  .update(process.env.ENCRYPTION_SECRET)
-  .digest();
+    throw new Error('ENCRYPTION_SECRET måste sättas i miljön');
+  }
+  const KEY = crypto
+    .createHash('sha256')
+    .update(process.env.ENCRYPTION_SECRET)
+    .digest();
 
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv(ALGORITHM, KEY, iv);
@@ -24,14 +24,14 @@ const KEY = crypto
 }
 
 export function decrypt(data) {
-    if (!process.env.ENCRYPTION_SECRET) {
-  throw new Error('ENCRYPTION_SECRET måste sättas i miljön');
-}
-const KEY = crypto
-  .createHash('sha256')
-  .update(process.env.ENCRYPTION_SECRET)
-  .digest();
-  
+  if (!process.env.ENCRYPTION_SECRET) {
+    throw new Error('ENCRYPTION_SECRET måste sättas i miljön');
+  }
+  const KEY = crypto
+    .createHash('sha256')
+    .update(process.env.ENCRYPTION_SECRET)
+    .digest();
+
   try {
     const [ivHex, tagHex, encryptedHex] = data.split(':');
     const iv = Buffer.from(ivHex, 'hex');

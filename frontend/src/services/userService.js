@@ -1,5 +1,5 @@
 import { apiFetch } from './apiClient.js';
-const API_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/api/user`;
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/user`;
 
 //LOGIN
 export async function login(email, password) {
@@ -23,14 +23,26 @@ export async function login(email, password) {
 }
 
 //REGISTER
-export async function register(firstName, lastName, email, password) {
+export async function register(
+  firstName,
+  lastName,
+  email,
+  password,
+  privacyAccepted
+) {
   try {
     const res = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ firstName, lastName, email, password }),
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password,
+        privacyAccepted,
+      }),
     });
     const data = await res.json();
 
