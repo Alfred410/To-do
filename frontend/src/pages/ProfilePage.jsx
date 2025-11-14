@@ -319,7 +319,7 @@ const ProfilePage = () => {
         </div>
 
         <button
-          className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-500 transition mb-4"
+          className="w-full bg-purple-600 text-white p-2 rounded-lg hover:bg-purple-500 transition mb-4"
           onClick={logout}
         >
           Logga ut

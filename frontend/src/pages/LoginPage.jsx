@@ -65,7 +65,7 @@ export default function Login() {
         />
         <button
           type="submit"
-          className="bg-indigo-600 cursor-pointer hover:bg-indigo-500 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]"
+          className="bg-purple-600 cursor-pointer hover:bg-purple-500 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]"
         >
           Logga in
         </button>
