@@ -43,55 +43,54 @@ export default function Register() {
         className="flex items-center  text-black flex-col "
       >
         <div className="w-full flex flex-col  max-w-[210px] my-2">
-          <label className="block text.sm font-semibold text-left text-gray-700 mb-1">
-            Förnamn <span className="text-gray-400 text-xs">(frivilligt)</span>
+          <label className="block text.sm font-semibold text-left text-gray-700">
+            Förnamn (valfritt)
           </label>
           <input
             type="text"
-            placeholder="Förnamn"
-            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Förnamn (valfritt)"
+            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
         <div className="w-full flex flex-col  max-w-[210px] my-2">
-          <label className="block text.sm font-semibold text-left text-gray-700 mb-1">
-            Efternamn
-            <span className="text-gray-400 text-xs"> (frivilligt)</span>
+          <label className="block text.sm font-semibold text-left text-gray-700">
+            Efternamn (valfritt)
           </label>
           <input
             type="text"
-            placeholder="Efternamn"
-            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Efternamn (valfritt)"
+            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
         <div className="w-full flex flex-col  max-w-[210px] my-2">
-          <label className="block text.sm font-semibold text-left text-gray-700 mb-1">
+          <label className="block text.sm font-semibold text-left text-gray-700">
             E-post
             <span className="text-red-500 "> *</span>
           </label>
           <input
             type="email"
             placeholder="E-post"
-            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="w-full flex flex-col  max-w-[210px] my-2">
-          <label className="block text.sm font-semibold text-left text-gray-700 mb-1">
+          <label className="block text.sm font-semibold text-left text-gray-700">
             Lösenord
             <span className="text-red-500 "> *</span>
           </label>
           <input
             type="password"
             placeholder="Lösenord"
-            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="my-2 sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
             required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="flex justify-center w-[250px] my-3">
+        <div className="flex justify-center w-[200px] my-3">
           <input
             type="checkbox"
             className="mr-2 border rounded py-1 pl-2"
@@ -106,7 +105,7 @@ export default function Register() {
             </Link>
           </p>
         </div>
-        <button className="bg-indigo-600 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]">
+        <button className="bg-purple-600 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]">
           Registrera
         </button>
       </form>

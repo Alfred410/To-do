@@ -46,7 +46,7 @@ export default function Navbar() {
         {/* Mobile menu */}
         {isOpen && (
           <div className="flex flex-col items-center gap-4 left-0 bg-purple-500/95 absolute w-full top-full">
-            <Link to="/" className="mr-3" onClick={() => setIsOpen(!isOpen)}>
+            <Link to="/" className="mt-2" onClick={() => setIsOpen(!isOpen)}>
               <LazyIcon>
                 <HomeIcon />
               </LazyIcon>
@@ -54,7 +54,6 @@ export default function Navbar() {
             </Link>
             <Link
               to="profile"
-              className="mr-2"
               onClick={() => setIsOpen(!isOpen)}
             >
               <LazyIcon>
@@ -62,18 +61,17 @@ export default function Navbar() {
               </LazyIcon>
               Profil
             </Link>
-
             {isLogin ? (
-              <button onClick={handleLogout}>
+              <Link onClick={handleLogout}>
                 <LazyIcon>
                   <LogoutIcon />
                 </LazyIcon>
                 Logga ut
-              </button>
+              </Link>
             ) : (
               <Link
                 to="/login"
-                className="mr-2"
+                className="mb-2"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <LazyIcon>
@@ -89,28 +87,28 @@ export default function Navbar() {
         <div className="hidden md:flex justify-end ">
           <Link to="/" className="mr-3">
             <LazyIcon>
-              <HomeIcon />
+              <HomeIcon className="mr-1"/>
             </LazyIcon>
             Hem
           </Link>
           <Link to="profile" className="mr-2">
             <LazyIcon>
-              <AccountCircleIcon />
+              <AccountCircleIcon className="mr-1"/>
             </LazyIcon>
             Profil
           </Link>
 
           {isLogin ? (
-            <button onClick={handleLogout}>
+            <Link onClick={handleLogout} className="mr-1">
               <LazyIcon>
-                <LogoutIcon />
+                <LogoutIcon className="mr-1"/>
               </LazyIcon>
               Logga ut
-            </button>
+            </Link>
           ) : (
-            <Link to="/login" className="mr-2">
+            <Link to="/login" className="mr-1">
               <LazyIcon>
-                <LoginIcon />
+                <LoginIcon className="mr-1"/>
               </LazyIcon>
               Logga in
             </Link>
