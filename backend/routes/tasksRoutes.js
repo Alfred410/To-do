@@ -46,22 +46,21 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
-router.put('/:id', authenticateToken, async (req, res) => {
+router.put('/:id/important', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { important, completed } = req.body;
+    const { important} = req.body;
 
-    if (important === undefined && completed === undefined) {
+    if (important === undefined) {
       return res
         .status(400)
         .json({ error: 'Ingen data skickades för uppdatering' });
     }
 
     const { rows } = await db.query(
-      `UPDATE tasks SET important = $1, completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *`,
+      `UPDATE tasks SET important = $1 WHERE id = $2 AND user_id = $3 RETURNING *`,
       [
-        important !== undefined ? Boolean(important) : undefined,
-        completed !== undefined ? Boolean(completed) : undefined,
+        Boolean(important),
         id,
         req.userId,
       ]
@@ -83,6 +82,45 @@ router.put('/:id', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Kunde inte uppdatera uppgift' });
   }
 });
+
+router.put('/:id/completed', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { completed } = req.body;
+
+    if (completed === undefined) {
+      return res
+        .status(400)
+        .json({ error: 'Ingen data skickades för uppdatering' });
+    }
+
+    const { rows } = await db.query(
+      `UPDATE tasks SET completed = $1 WHERE id = $2 AND user_id = $3 RETURNING *`,
+      [
+        Boolean(completed),
+        id,
+        req.userId,
+      ]
+    );
+    
+    if (rows.length === 0) {
+      return res
+        .status(404)
+        .json({ error: `Ingen uppgift hittades med id ${id}` });
+    }
+
+    // Dekryptera title om den finns och är en icke-tom sträng innan svar skickas till klienten
+    if (typeof rows[0].title === 'string' && rows[0].title.length > 0) {
+      rows[0].title = decrypt(rows[0].title);
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Kunde inte uppdatera uppgift' });
+  }
+});
+
 
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {

@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import {
   getTasks,
   addTask,
-  updateTask,
+  updateTaskImportant,
+  updateTaskCompleted,
   deleteTask,
 } from '../services/taskService';
 import { getCategories } from '../services/categoryService.js';
@@ -65,9 +66,7 @@ export default function TodoApp() {
     try {
       const task = tasks.find((t) => t.id === id);
       if (!task) return;
-      const updated = await updateTask(id, {
-        completed: !task.completed,
-      });
+      const updated = await updateTaskCompleted(id, !task.completed);
       setTasks(tasks.map((t) => (t.id === id ? updated : t)));
     } catch (err) {
       console.error(err);
@@ -78,9 +77,7 @@ export default function TodoApp() {
     try {
       const task = tasks.find((t) => t.id === id);
       if (!task) return;
-      const updated = await updateTask(id, {
-        important: !task.important,
-      });
+      const updated = await updateTaskImportant(id, !task.important);
       setTasks(tasks.map((t) => (t.id === id ? updated : t)));
     } catch (err) {
       console.error(err);

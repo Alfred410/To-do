@@ -22,20 +22,26 @@ export async function addTask(task) {
   }
 }
 
-export async function updateTask(id, updates) {
+export async function updateTaskImportant(id, important) {
   try {
-    const body = {};
-    if (updates.completed !== undefined)
-      body.completed = Boolean(updates.completed);
-    if (updates.important !== undefined)
-      body.important = Boolean(updates.important);
-
-    return await apiFetch(`${API_URL}/${id}`, {
+    return await apiFetch(`${API_URL}/${id}/important`, {
       method: 'PUT',
-      body: JSON.stringify(body),
+      body: JSON.stringify({ important: Boolean(important) }),
     });
   } catch (err) {
-    console.error('Fel vid uppdatering av uppgift:', err);
+    console.error('Fel vid uppdatering av stjärnmärkning:', err);
+    throw err;
+  }
+}
+
+export async function updateTaskCompleted(id, completed) {
+  try {
+    return await apiFetch(`${API_URL}/${id}/completed`, {
+      method: 'PUT',
+      body: JSON.stringify({ completed: Boolean(completed) }),
+    });
+  } catch (err) {
+    console.error('Fel vid uppdatering av checkbox:', err);
     throw err;
   }
 }
