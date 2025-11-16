@@ -58,7 +58,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
     }
 
     const { rows } = await db.query(
-      `UPDATE tasks SET important = COALESCE($1, important), completed = COALESCE($2, completed) WHERE id = $3 AND user_id = $4 RETURNING *`,
+      `UPDATE tasks SET important = $1, completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *`,
       [
         important !== undefined ? Boolean(important) : undefined,
         completed !== undefined ? Boolean(completed) : undefined,
