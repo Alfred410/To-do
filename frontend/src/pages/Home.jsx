@@ -97,18 +97,18 @@ export default function TodoApp() {
     if (!category) return 'bg-purple-100 text-purple-800';
 
     switch (category.task_category) {
-      case 'arbete':
-        return 'bg-green-100 text-green-700';
+      case 'Arbete':
+        return 'bg-lime-200 text-lime-800';
       case 'Privat':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-teal-200 text-teal-800';
       case 'Skola':
-        return 'bg-purple-100 text-purple-700';
+        return 'bg-fuchsia-200 text-fuchsia-800';
       case 'Shopping':
-        return 'bg-pink-100 text-pink-800';
+        return 'bg-sky-200 text-sky-800';
       case 'Viktigt':
-        return 'bg-yellow-100 text-yellow-700';
+        return 'bg-orange-200 text-orange-800';
       default:
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-purple-200 text-purple-800';
     }
   };
 

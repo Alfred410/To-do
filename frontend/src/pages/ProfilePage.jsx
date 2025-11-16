@@ -110,7 +110,7 @@ const ProfilePage = () => {
         }
         break;
 
-      case 'password':
+      case 'password': {
         if (!currentPassword || !newPassword || !confirmPassword) {
           setFeedbackType('error');
           setFeedback('Alla lösenordsfält måste fyllas i.');
@@ -126,6 +126,12 @@ const ProfilePage = () => {
           setFeedback('Det nya lösenordet måste vara minst 8 tecken.');
           break;
         }
+        const passwordRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/;
+        if (!passwordRegex.test(newPassword)) {
+          setFeedbackType('error');
+          setFeedback('Lösenordet måste innehålla stora och små bokstäver, siffror och specialtecken.');
+          break;
+        }
         try {
           await changePassword(currentPassword, newPassword);
           setFeedbackType('success');
@@ -138,6 +144,7 @@ const ProfilePage = () => {
           setFeedback('Kunde inte ändra lösenord.');
         }
         break;
+      }
 
       case 'delete':
         try {

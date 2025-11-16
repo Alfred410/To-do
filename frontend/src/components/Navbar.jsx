@@ -62,7 +62,7 @@ export default function Navbar() {
               Profil
             </Link>
             {isLogin ? (
-              <Link onClick={handleLogout}>
+              <Link onClick={handleLogout} className="mb-2">
                 <LazyIcon>
                   <LogoutIcon />
                 </LazyIcon>
