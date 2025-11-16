@@ -105,7 +105,7 @@ export default function Register() {
             </Link>
           </p>
         </div>
-        <button className="bg-purple-600 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]">
+        <button className="bg-purple-600 text-white h-8 w-[100px] rounded mt-[50px]">
           Registrera
         </button>
       </form>
