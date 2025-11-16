@@ -67,7 +67,7 @@ export default function TodoApp() {
       const task = tasks.find((t) => t.id === id);
       if (!task) return;
       const updated = await updateTaskCompleted(id, !task.completed);
-      setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+      setTasks(prevTasks => prevTasks.map((t) => (t.id === id ? updated : t)));
     } catch (err) {
       console.error(err);
     }
@@ -78,7 +78,7 @@ export default function TodoApp() {
       const task = tasks.find((t) => t.id === id);
       if (!task) return;
       const updated = await updateTaskImportant(id, !task.important);
-      setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+      setTasks(prevTasks => prevTasks.map((t) => (t.id === id ? updated : t)));
     } catch (err) {
       console.error(err);
     }
@@ -86,7 +86,7 @@ export default function TodoApp() {
 
   const deleteTaskHandler = async (id) => {
     await deleteTask(id);
-    setTasks(tasks.filter((t) => t.id !== id));
+    setTasks(prevTasks => prevTasks.filter((t) => t.id !== id));
   };
 
   const categoryColor = (categoryId) => {
@@ -205,11 +205,9 @@ export default function TodoApp() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => toggleImportant(task.id)}
-                  className={`hover:text-yellow-400 transition ${
-                    task.important ? 'text-yellow-500' : 'text-gray-300'
-                  }`}
+                  className={`hover:text-yellow-400 transition`}
                 >
-                  <StarIcon />
+                  <StarIcon className={`${task.important ? 'text-yellow-500' : 'text-gray-300'}`} />
                 </button>
                 <button
                   onClick={() => deleteTaskHandler(task.id)}
