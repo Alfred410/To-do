@@ -50,27 +50,29 @@ export default function Login() {
         className="flex items-center  mt-10 text-black flex-col"
       >
         <div className="mb-4">
-        <label className="block text-gray-800 font-semibold mb-2">
+          <label className="block text-gray-800 font-semibold mb-2">
             E-post
-        </label>
-        <input
-          type="email"
-          placeholder="E-post"
-          className="sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        /></div>
+          </label>
+          <input
+            type="email"
+            placeholder="E-post"
+            className="sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
         <div className="mb-4">
-        <label className="block text-gray-800 font-semibold mb-2">
+          <label className="block text-gray-800 font-semibold mb-2">
             Lösenord
-        </label>
-        <input
-          type="password"
-          placeholder="Lösenord"
-          className="sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        /></div>
+          </label>
+          <input
+            type="password"
+            placeholder="Lösenord"
+            className="sm:flex-1 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
         <button
           type="submit"
           className="bg-purple-600 cursor-pointer hover:bg-purple-500 text-white h-8 w-[100px] rounded mt-[150px] sm:mt-[50px]"

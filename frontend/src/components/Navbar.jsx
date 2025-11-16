@@ -52,10 +52,7 @@ export default function Navbar() {
               </LazyIcon>
               Hem
             </Link>
-            <Link
-              to="profile"
-              onClick={() => setIsOpen(!isOpen)}
-            >
+            <Link to="profile" onClick={() => setIsOpen(!isOpen)}>
               <LazyIcon>
                 <AccountCircleIcon />
               </LazyIcon>
@@ -87,13 +84,13 @@ export default function Navbar() {
         <div className="hidden md:flex justify-end ">
           <Link to="/" className="mr-3">
             <LazyIcon>
-              <HomeIcon className="mr-1"/>
+              <HomeIcon className="mr-1" />
             </LazyIcon>
             Hem
           </Link>
           <Link to="profile" className="mr-2">
             <LazyIcon>
-              <AccountCircleIcon className="mr-1"/>
+              <AccountCircleIcon className="mr-1" />
             </LazyIcon>
             Profil
           </Link>
@@ -101,14 +98,14 @@ export default function Navbar() {
           {isLogin ? (
             <Link onClick={handleLogout} className="mr-1">
               <LazyIcon>
-                <LogoutIcon className="mr-1"/>
+                <LogoutIcon className="mr-1" />
               </LazyIcon>
               Logga ut
             </Link>
           ) : (
             <Link to="/login" className="mr-1">
               <LazyIcon>
-                <LoginIcon className="mr-1"/>
+                <LoginIcon className="mr-1" />
               </LazyIcon>
               Logga in
             </Link>

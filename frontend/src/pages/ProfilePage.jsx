@@ -126,10 +126,13 @@ const ProfilePage = () => {
           setFeedback('Det nya lösenordet måste vara minst 8 tecken.');
           break;
         }
-        const passwordRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/;
+        const passwordRegex =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/;
         if (!passwordRegex.test(newPassword)) {
           setFeedbackType('error');
-          setFeedback('Lösenordet måste innehålla stora och små bokstäver, siffror och specialtecken.');
+          setFeedback(
+            'Lösenordet måste innehålla stora och små bokstäver, siffror och specialtecken.'
+          );
           break;
         }
         try {
